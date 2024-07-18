@@ -15,3 +15,4 @@ spring:
   config:
     import:
       - msa-core.yml
+      - monitor.yml

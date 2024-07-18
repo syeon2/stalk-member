@@ -1,7 +1,7 @@
 dependencies {
+    implementation(project(":member-api"))
+    implementation(project(":support:monitor"))
     implementation(project(":support:msa-core"))
-
-    implementation("org.springframework.boot:spring-boot-starter-web")
 }
 
 tasks.getByName("bootJar") {
