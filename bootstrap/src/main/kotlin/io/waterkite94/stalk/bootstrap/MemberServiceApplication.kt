@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.memberservice
+package io.waterkite94.stalk.bootstrap
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
