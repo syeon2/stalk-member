@@ -1,7 +1,9 @@
 rootProject.name = "member-service"
 
 include(
-    "bootstrap"
+    "bootstrap",
+    "support:msa-core",
+    "support:monitor"
 )
 
 pluginManagement {

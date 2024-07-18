@@ -27,6 +27,13 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
+    dependencyManagement {
+        val springCloudDependenciesVersion: String by project
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudDependenciesVersion")
+        }
+    }
+
     dependencies {
         // base config
         implementation("org.jetbrains.kotlin:kotlin-reflect")
