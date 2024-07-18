@@ -1,0 +1,21 @@
+- hosts: stalk-member
+  become: true
+
+  tasks:
+    - name: stop the cloud member container
+      command: docker stop stalk-member
+      ignore_errors: yes
+
+    - name: remove the cloud member container
+      command: docker rm stalk-member
+      ignore_errors: yes
+
+    - name: remove the cloud member docker image
+      command: docker rmi waterkite94/stalk-member
+      ignore_errors: yes
+
+    - name: pull the cloud member image from docker hub
+      command: docker pull waterkite94/stalk-member
+
+    - name: execute cloud member container
+      command: docker run -d --name stalk-member --network stalk-network waterkite94/stalk-member

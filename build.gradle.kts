@@ -56,4 +56,12 @@ subprojects {
             kotlin.srcDirs("src/main/kotlin")
         }
     }
+
+    tasks.getByName("bootJar") {
+        enabled = false
+    }
+
+    tasks.getByName("jar") {
+        enabled = false
+    }
 }
