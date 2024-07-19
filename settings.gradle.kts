@@ -7,7 +7,8 @@ include(
     "member-usecase",
     "member-infrastructure:persistence",
     "support:msa-core",
-    "support:monitor"
+    "support:monitor",
+    "support:exception"
 )
 
 pluginManagement {

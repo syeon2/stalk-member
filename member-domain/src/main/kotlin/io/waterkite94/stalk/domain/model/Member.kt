@@ -1,24 +1,24 @@
 package io.waterkite94.stalk.domain.model
 
+import io.waterkite94.stalk.domain.type.RoleLevel
 import java.time.LocalDateTime
 
 data class Member(
     val id: Long? = null,
-    val memberId: String? = null,
+    var memberId: String? = null,
     val username: String,
     val email: String,
-    val password: String,
+    var password: String,
     val phoneNumber: String,
     val introduction: String,
     val profileImageUrl: String? = null,
-    val roleLevel: RoleLevel? = null,
+    var roleLevel: RoleLevel? = RoleLevel.USER_GENERAL,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
 ) {
-    enum class RoleLevel {
-        USER_GENERAL,
-        USER_VIP,
-        ADMIN_SUPER,
-        ADMIN_NORMAL
-    }
+    fun withMemberId(memberId: String): Member = copy(memberId = memberId)
+
+    fun withPassword(password: String): Member = copy(password = password)
+
+    fun withRoleLevel(roleLevel: RoleLevel): Member = copy(roleLevel = roleLevel)
 }
