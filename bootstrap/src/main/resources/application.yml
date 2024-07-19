@@ -14,5 +14,7 @@ spring:
 
   config:
     import:
+      - api.yml
+      - persistence.yml
       - msa-core.yml
       - monitor.yml
