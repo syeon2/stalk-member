@@ -3,6 +3,8 @@ dependencies {
     implementation(project(":member-infrastructure:persistence"))
     implementation(project(":support:monitor"))
     implementation(project(":support:msa-core"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
 }
 
 tasks.getByName("bootJar") {
