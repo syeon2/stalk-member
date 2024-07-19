@@ -1,5 +1,6 @@
 dependencies {
     implementation(project(":member-domain"))
+    implementation(project(":member-usecase"))
 
     // SQL
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
