@@ -5,12 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import io.waterkite94.stalk.domain.model.Member;
 import io.waterkite94.stalk.infrastructure.entity.MemberEntity;
-import io.waterkite94.stalk.usecase.port.MemberRepository;
+import io.waterkite94.stalk.usecase.port.CreateMemberPort;
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberPersistenceAdapter implements MemberRepository {
+public class MemberPersistenceAdapter implements CreateMemberPort {
 
 	private final MemberJpaRepository memberJpaRepository;
 	private final MemberMapper memberMapper;

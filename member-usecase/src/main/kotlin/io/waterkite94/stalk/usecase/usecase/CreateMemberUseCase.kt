@@ -2,6 +2,6 @@ package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
 
-interface CreateMember {
+interface CreateMemberUseCase {
     fun createMember(member: Member): Member
 }

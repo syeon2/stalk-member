@@ -1,6 +1,6 @@
 package io.waterkite94.stalk.infrastructure.entity;
 
-import io.waterkite94.stalk.domain.model.RoleLevel;
+import io.waterkite94.stalk.domain.model.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,11 +48,11 @@ public class MemberEntity extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role_level", columnDefinition = "varchar(30)", nullable = false)
-	private RoleLevel roleLevel;
+	private Member.RoleLevel roleLevel;
 
 	@Builder
 	private MemberEntity(String memberId, String username, String email, String password, String phoneNumber,
-		String introduction, String profileImageUrl, RoleLevel roleLevel) {
+		String introduction, String profileImageUrl, Member.RoleLevel roleLevel) {
 		this.memberId = memberId;
 		this.username = username;
 		this.email = email;

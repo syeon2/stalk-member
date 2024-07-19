@@ -14,4 +14,11 @@ data class Member(
     val roleLevel: RoleLevel? = null,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
-)
+) {
+    enum class RoleLevel {
+        USER_GENERAL,
+        USER_VIP,
+        ADMIN_SUPER,
+        ADMIN_NORMAL
+    }
+}

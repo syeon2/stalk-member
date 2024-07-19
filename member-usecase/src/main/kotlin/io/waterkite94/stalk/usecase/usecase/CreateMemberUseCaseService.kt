@@ -1,14 +1,13 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.model.RoleLevel
-import io.waterkite94.stalk.usecase.port.MemberRepository
+import io.waterkite94.stalk.usecase.port.CreateMemberPort
 import org.springframework.stereotype.Service
 
 @Service
-class CreateMemberService(
-    private val memberRepository: MemberRepository
-) : CreateMember {
+class CreateMemberUseCaseService(
+    private val createMemberPort: CreateMemberPort
+) : CreateMemberUseCase {
     override fun createMember(member: Member): Member {
 //        memberRepository.save(member)
         val members =
@@ -21,10 +20,10 @@ class CreateMemberService(
                 "00011112222",
                 "wow!in troduce",
                 null,
-                RoleLevel.ADMIN_SUPER
+                Member.RoleLevel.ADMIN_SUPER
             )
 
-        memberRepository.save(members)
+        createMemberPort.save(members)
 
         return members
     }

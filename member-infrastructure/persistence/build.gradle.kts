@@ -12,7 +12,7 @@ dependencies {
 
     // DB
     runtimeOnly("com.mysql:mysql-connector-j")
-    implementation("com.h2database:h2")
+    testRuntimeOnly("com.h2database:h2")
 
     // Util
     compileOnly("org.projectlombok:lombok")
