@@ -12,7 +12,7 @@ import java.util.UUID
 class CreateMemberService(
     private val createMemberPort: CreateMemberPort,
     private val findMemberPort: FindMemberPort
-) : CreateMemberUseCase {
+) : CreateMember {
     override fun createMember(
         member: Member,
         emailAuthenticationCode: String

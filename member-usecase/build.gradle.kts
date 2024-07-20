@@ -1,6 +1,7 @@
 dependencies {
     implementation(project(":member-domain"))
-    implementation(project(":support:exception"))
+    implementation(project(":member-common:mail"))
+    implementation(project(":member-common:exception"))
 
     implementation("org.springframework:spring-context")
 }

@@ -1,7 +1,7 @@
 dependencies {
     implementation(project(":member-domain"))
     implementation(project(":member-usecase"))
-    implementation(project(":support:exception"))
+    implementation(project(":member-common:exception"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")

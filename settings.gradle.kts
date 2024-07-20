@@ -6,9 +6,10 @@ include(
     "member-domain",
     "member-usecase",
     "member-infrastructure:persistence",
+    "member-common:exception",
+    "member-common:mail",
     "support:msa-core",
-    "support:monitor",
-    "support:exception"
+    "support:monitor"
 )
 
 pluginManagement {

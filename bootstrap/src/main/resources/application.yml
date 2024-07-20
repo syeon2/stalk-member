@@ -18,3 +18,12 @@ spring:
       - persistence.yml
       - msa-core.yml
       - monitor.yml
+      - mail.yml
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+    import: file:.env[.properties]
