@@ -3,6 +3,7 @@ package io.waterkite94.stalk.usecase.usecase
 import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.type.RoleLevel
 import io.waterkite94.stalk.exception.DuplicatedMemberException
+import io.waterkite94.stalk.security.util.SecurityUtil
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort
 import io.waterkite94.stalk.usecase.port.CreateMemberPort
 import io.waterkite94.stalk.usecase.port.FindMemberPort
@@ -13,7 +14,8 @@ import java.util.UUID
 class CreateMemberService(
     private val createMemberPort: CreateMemberPort,
     private val findMemberPort: FindMemberPort,
-    private val authenticationCodePort: AuthenticationCodePort
+    private val authenticationCodePort: AuthenticationCodePort,
+    private val securityUtil: SecurityUtil
 ) : CreateMember {
     override fun createMember(
         member: Member,
@@ -57,10 +59,7 @@ class CreateMemberService(
 
     private fun generateMemberId(): String = UUID.randomUUID().toString()
 
-    private fun encryptPassword(password: String): String {
-        // TODO:: encrypting password
-        return "encryptedPassword"
-    }
+    private fun encryptPassword(password: String): String = securityUtil.encryptPassword(password)
 
     private fun assignDefaultRole(): RoleLevel = RoleLevel.USER_GENERAL
 }
