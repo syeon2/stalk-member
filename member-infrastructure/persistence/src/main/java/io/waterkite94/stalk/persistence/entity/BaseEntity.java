@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.infrastructure.entity;
+package io.waterkite94.stalk.persistence.entity;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

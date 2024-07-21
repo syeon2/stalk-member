@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.infrastructure.repository;
+package io.waterkite94.stalk.persistence.repository;
 
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Repository;
 
 import io.waterkite94.stalk.domain.model.Member;
-import io.waterkite94.stalk.infrastructure.entity.MemberEntity;
+import io.waterkite94.stalk.persistence.entity.MemberEntity;
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort;
 import lombok.RequiredArgsConstructor;
 

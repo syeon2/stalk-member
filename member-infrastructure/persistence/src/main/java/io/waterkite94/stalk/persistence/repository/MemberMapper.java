@@ -1,9 +1,9 @@
-package io.waterkite94.stalk.infrastructure.repository;
+package io.waterkite94.stalk.persistence.repository;
 
 import org.springframework.stereotype.Component;
 
 import io.waterkite94.stalk.domain.model.Member;
-import io.waterkite94.stalk.infrastructure.entity.MemberEntity;
+import io.waterkite94.stalk.persistence.entity.MemberEntity;
 
 @Component
 public class MemberMapper {

@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.infrastructure.config;
+package io.waterkite94.stalk.persistence.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

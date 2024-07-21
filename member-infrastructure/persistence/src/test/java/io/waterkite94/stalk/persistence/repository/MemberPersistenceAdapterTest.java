@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.infrastructure.repository;
+package io.waterkite94.stalk.persistence.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
 import io.waterkite94.stalk.domain.type.RoleLevel;
-import io.waterkite94.stalk.infrastructure.IntegrationTestSupport;
+import io.waterkite94.stalk.persistence.IntegrationTestSupport;
 
 class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
