@@ -33,6 +33,5 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 			memberJpaRepository.findMemberByEmailOrPhoneNumber(email, phoneNumber);
 
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
-
 	}
 }
