@@ -6,6 +6,7 @@ include(
     "member-domain",
     "member-usecase",
     "member-infrastructure:persistence",
+    "member-infrastructure:redis",
     "member-common:exception",
     "member-common:mail",
     "support:msa-core",
