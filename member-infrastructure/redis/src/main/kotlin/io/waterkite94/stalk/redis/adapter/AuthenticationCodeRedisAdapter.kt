@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.adapter
+package io.waterkite94.stalk.redis.adapter
 
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort
 import org.springframework.core.env.Environment

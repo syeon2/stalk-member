@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.config
+package io.waterkite94.stalk.redis.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
