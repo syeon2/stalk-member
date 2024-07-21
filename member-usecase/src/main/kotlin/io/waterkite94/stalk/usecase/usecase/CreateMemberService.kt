@@ -5,15 +5,13 @@ import io.waterkite94.stalk.domain.type.RoleLevel
 import io.waterkite94.stalk.exception.DuplicatedMemberException
 import io.waterkite94.stalk.security.util.SecurityUtil
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort
-import io.waterkite94.stalk.usecase.port.CreateMemberPort
-import io.waterkite94.stalk.usecase.port.FindMemberPort
+import io.waterkite94.stalk.usecase.port.MemberPersistencePort
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class CreateMemberService(
-    private val createMemberPort: CreateMemberPort,
-    private val findMemberPort: FindMemberPort,
+    private val memberPersistencePort: MemberPersistencePort,
     private val authenticationCodePort: AuthenticationCodePort,
     private val securityUtil: SecurityUtil
 ) : CreateMember {
@@ -24,14 +22,14 @@ class CreateMemberService(
         validateEmailAndPhoneNumber(member.email, member.phoneNumber)
         validateEmailAuthenticationCode(member.email, emailAuthenticationCode)
 
-        return createMemberPort.save(initializeNewMember(member))
+        return memberPersistencePort.save(initializeNewMember(member))
     }
 
     private fun validateEmailAndPhoneNumber(
         email: String,
         phoneNumber: String
     ) {
-        findMemberPort.findMemberByEmailOrPhoneNumber(email, phoneNumber)?.let {
+        memberPersistencePort.findMemberByEmailOrPhoneNumber(email, phoneNumber)?.let {
             throw DuplicatedMemberException("Email or phone number already exists")
         }
     }
