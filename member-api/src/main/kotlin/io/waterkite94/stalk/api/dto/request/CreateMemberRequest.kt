@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.api.request
+package io.waterkite94.stalk.api.dto.request
 
 import io.waterkite94.stalk.domain.model.Member
 import jakarta.validation.constraints.Email

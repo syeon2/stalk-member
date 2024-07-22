@@ -1,6 +1,6 @@
 package io.waterkite94.stalk.persistence.entity;
 
-import io.waterkite94.stalk.domain.type.RoleLevel;
+import io.waterkite94.stalk.domain.vo.RoleLevel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

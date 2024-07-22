@@ -1,6 +1,6 @@
 package io.waterkite94.stalk.domain.model
 
-import io.waterkite94.stalk.domain.type.RoleLevel
+import io.waterkite94.stalk.domain.vo.RoleLevel
 import java.time.LocalDateTime
 
 data class Member(

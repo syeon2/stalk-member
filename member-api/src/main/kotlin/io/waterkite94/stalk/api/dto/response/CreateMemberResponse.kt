@@ -1,7 +1,7 @@
-package io.waterkite94.stalk.api.response
+package io.waterkite94.stalk.api.dto.response
 
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.type.RoleLevel
+import io.waterkite94.stalk.domain.vo.RoleLevel
 
 data class CreateMemberResponse(
     val memberId: String,

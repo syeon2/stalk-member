@@ -1,9 +1,9 @@
 package io.waterkite94.stalk.api.controller
 
 import io.waterkite94.stalk.api.ControllerTestSupport
-import io.waterkite94.stalk.api.request.CreateMemberRequest
+import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.type.RoleLevel
+import io.waterkite94.stalk.domain.vo.RoleLevel
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
@@ -33,7 +33,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
     @Test
     @WithMockUser(roles = ["USER"])
-    fun createMemberRequest() {
+    fun createMemberApiRequest() {
         // given
         val request = requestDto()
         val resultMember = resultDomain()
@@ -60,7 +60,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
     @Test
     @WithMockUser(roles = ["USER"])
-    fun verifyEmailRequest() {
+    fun verifyEmailApiRequest() {
         // given
         val email = "test@test.com"
 
@@ -75,6 +75,8 @@ class MemberRestControllerTest : ControllerTestSupport() {
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data.toEmail").isString)
     }
 
     private fun requestDto() =

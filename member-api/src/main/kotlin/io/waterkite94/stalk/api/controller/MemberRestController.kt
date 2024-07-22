@@ -1,9 +1,9 @@
 package io.waterkite94.stalk.api.controller
 
-import io.waterkite94.stalk.api.request.CreateMemberRequest
-import io.waterkite94.stalk.api.response.ApiResponse
-import io.waterkite94.stalk.api.response.CreateMemberResponse
-import io.waterkite94.stalk.api.response.VerificationEmailResponse
+import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
+import io.waterkite94.stalk.api.dto.response.ApiResponse
+import io.waterkite94.stalk.api.dto.response.CreateMemberResponse
+import io.waterkite94.stalk.api.dto.response.VerifyEmailResponse
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
@@ -20,7 +20,7 @@ class MemberRestController(
     private val verifyEmail: VerifyEmail
 ) {
     @PostMapping("/members")
-    fun createMember(
+    fun createMemberApi(
         @Valid @RequestBody request: CreateMemberRequest
     ): ApiResponse<CreateMemberResponse> {
         val createdMember =
@@ -30,11 +30,11 @@ class MemberRestController(
     }
 
     @PostMapping("/member/verification-email/{email}")
-    fun verificationEmail(
+    fun verifyEmailApi(
         @PathVariable email: String
-    ): ApiResponse<VerificationEmailResponse> {
+    ): ApiResponse<VerifyEmailResponse> {
         val fromEmail = verifyEmail.verifyEmail(email)
 
-        return ApiResponse.success(VerificationEmailResponse(fromEmail))
+        return ApiResponse.success(VerifyEmailResponse(fromEmail))
     }
 }

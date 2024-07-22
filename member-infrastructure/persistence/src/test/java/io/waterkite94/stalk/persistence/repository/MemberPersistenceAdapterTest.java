@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
-import io.waterkite94.stalk.domain.type.RoleLevel;
+import io.waterkite94.stalk.domain.vo.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
 
 class MemberPersistenceAdapterTest extends IntegrationTestSupport {
