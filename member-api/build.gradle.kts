@@ -1,11 +1,12 @@
 dependencies {
+    implementation(project(":member-domain"))
+    implementation(project(":member-usecase"))
+    implementation(project(":member-common:exception"))
+
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
-tasks.getByName("bootJar") {
-    enabled = false
-}
-
-tasks.getByName("jar") {
-    enabled = true
-}
+tasks.getByName("jar").enabled = true
+tasks.getByName("bootJar").enabled = false

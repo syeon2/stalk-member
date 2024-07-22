@@ -41,10 +41,14 @@ subprojects {
         // spring
         implementation("org.springframework.boot:spring-boot-starter")
 
+        // Util
+        implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+
         // test
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     }
 
     kotlin {
