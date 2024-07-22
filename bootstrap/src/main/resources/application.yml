@@ -14,5 +14,17 @@ spring:
 
   config:
     import:
+      - api.yml
+      - persistence.yml
+      - redis.yml
       - msa-core.yml
       - monitor.yml
+      - mail.yml
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+    import: file:.env[.properties]
