@@ -22,6 +22,8 @@ class WebSecurity {
                 .permitAll()
                 .requestMatchers(AntPathRequestMatcher("/api/v1/member/verification-email/**"))
                 .permitAll()
+                .requestMatchers(AntPathRequestMatcher("/api/v1/member/**"))
+                .permitAll()
                 .anyRequest()
                 .authenticated()
         }

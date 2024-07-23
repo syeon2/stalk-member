@@ -1,9 +1,12 @@
 package io.waterkite94.stalk.api.controller
 
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
+import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.api.dto.response.ApiResponse
 import io.waterkite94.stalk.api.dto.response.CreateMemberResponse
 import io.waterkite94.stalk.api.dto.response.VerifyEmailResponse
+import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 class MemberRestController(
     private val createMember: CreateMember,
+    private val changeMemberProfile: ChangeMemberProfile,
     private val verifyEmail: VerifyEmail
 ) {
     @PostMapping("/members")
@@ -36,5 +40,15 @@ class MemberRestController(
         val fromEmail = verifyEmail.verifyEmail(email)
 
         return ApiResponse.success(VerifyEmailResponse(fromEmail))
+    }
+
+    @PostMapping("/member/{memberId}")
+    fun changeMemberProfileApi(
+        @PathVariable memberId: String,
+        @RequestBody request: UpdateMemberRequest
+    ): ApiResponse<UpdateMemberInformationDto> {
+        val changedMemberProfile = changeMemberProfile.changeMemberProfile(memberId, request.toDto())
+
+        return ApiResponse.success(changedMemberProfile)
     }
 }

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Repository;
 
 import io.waterkite94.stalk.domain.model.Member;
+import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +16,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberPersistenceAdapter implements MemberPersistencePort {
 
-	private final MemberJpaRepository memberJpaRepository;
+	private final MemberRepository memberRepository;
 	private final MemberMapper memberMapper;
 
 	@NotNull
 	@Override
 	public Member save(@NotNull Member member) {
-		MemberEntity savedMember = memberJpaRepository.save(memberMapper.toEntity(member));
+		MemberEntity savedMember = memberRepository.save(memberMapper.toEntity(member));
 
 		return memberMapper.toDomain(savedMember);
 	}
@@ -30,8 +31,14 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	@Override
 	public Member findMemberByEmailOrPhoneNumber(@NotNull String email, @NotNull String phoneNumber) {
 		Optional<MemberEntity> findMemberOptional =
-			memberJpaRepository.findMemberByEmailOrPhoneNumber(email, phoneNumber);
+			memberRepository.findMemberByEmailOrPhoneNumber(email, phoneNumber);
 
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
+	}
+
+	@Override
+	public void updateMemberInformation(@NotNull String memberId,
+		@NotNull UpdateMemberInformationDto memberInformationDto) {
+		memberRepository.updateInformation(memberId, memberInformationDto);
 	}
 }
