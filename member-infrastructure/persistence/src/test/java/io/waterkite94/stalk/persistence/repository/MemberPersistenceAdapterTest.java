@@ -21,11 +21,11 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 	private MemberPersistenceAdapter memberPersistenceAdapter;
 
 	@Autowired
-	private MemberJpaRepository memberJpaRepository;
+	private MemberRepository memberRepository;
 
 	@BeforeEach
 	void before() {
-		memberJpaRepository.deleteAllInBatch();
+		memberRepository.deleteAllInBatch();
 	}
 
 	@Test
