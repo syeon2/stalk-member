@@ -1,6 +1,6 @@
 package io.waterkite94.stalk.api.error
 
-import io.waterkite94.stalk.api.response.ApiResponse
+import io.waterkite94.stalk.api.dto.response.ApiResponse
 import io.waterkite94.stalk.exception.DuplicatedMemberException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler

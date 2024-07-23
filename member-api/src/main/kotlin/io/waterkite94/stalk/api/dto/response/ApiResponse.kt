@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.api.response
+package io.waterkite94.stalk.api.dto.response
 
 sealed class ApiResponse<T> {
     data class Success<T>(
