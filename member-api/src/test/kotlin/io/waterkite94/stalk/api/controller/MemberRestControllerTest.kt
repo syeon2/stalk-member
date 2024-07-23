@@ -2,8 +2,10 @@ package io.waterkite94.stalk.api.controller
 
 import io.waterkite94.stalk.api.ControllerTestSupport
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
+import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.vo.RoleLevel
+import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
@@ -27,6 +29,9 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
     @MockBean
     private lateinit var verifyEmail: VerifyEmail
+
+    @MockBean
+    private lateinit var changeMemberProfile: ChangeMemberProfile
 
     @Autowired
     private lateinit var memberRestController: MemberRestController
@@ -77,6 +82,31 @@ class MemberRestControllerTest : ControllerTestSupport() {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.toEmail").isString)
+    }
+
+    @Test
+    @WithMockUser(roles = ["USER"])
+    fun changeMemberProfileRequest() {
+        // given
+        val memberId = "waterkite94@gmail.com"
+        val request = UpdateMemberRequest("username", "introduction")
+
+        given(changeMemberProfile.changeMemberProfile(memberId, request.toDto()))
+            .willReturn(request.toDto())
+
+        // when   // then
+        mockMvc
+            .perform(
+                post("/api/v1/member/$memberId")
+                    .with(csrf())
+                    .param("memberId", memberId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data.username").isString)
+            .andExpect(jsonPath("$.data.introduction").isString)
     }
 
     private fun requestDto() =

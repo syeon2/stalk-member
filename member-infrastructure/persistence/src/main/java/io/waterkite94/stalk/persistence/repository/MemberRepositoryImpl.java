@@ -17,11 +17,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 
-	@Modifying(clearAutomatically = true)
-	@Transactional
 	@Override
+	@Transactional
+	@Modifying(clearAutomatically = true)
 	public void updateInformation(String memberId, UpdateMemberInformationDto updateMemberInformationDto) {
-		System.out.println(updateMemberInformationDto.getIntroduction());
 		JPAUpdateClause update = queryFactory.update(memberEntity);
 
 		update.set(memberEntity.username, updateMemberInformationDto.getUsername());

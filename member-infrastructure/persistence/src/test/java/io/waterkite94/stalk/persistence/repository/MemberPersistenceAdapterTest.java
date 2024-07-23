@@ -3,8 +3,11 @@ package io.waterkite94.stalk.persistence.repository;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
+import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
 import io.waterkite94.stalk.domain.vo.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
+import io.waterkite94.stalk.persistence.entity.MemberEntity;
 
 class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
@@ -25,6 +30,11 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
 	@BeforeEach
 	void before() {
+		memberRepository.deleteAllInBatch();
+	}
+
+	@AfterEach
+	void after() {
 		memberRepository.deleteAllInBatch();
 	}
 
@@ -85,8 +95,42 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 				member.getPhoneNumber(), member.getIntroduction());
 	}
 
+	@Test
+	@DisplayName(value = "회원 정보를 수정합니다.")
+	void updateMemberInformation() {
+		// given
+		String username = "username";
+		String introduction = "introduction";
+		Member member = createMemberUsernameAndIntroduction(username, introduction);
+
+		Member savedMember = memberPersistenceAdapter.save(member);
+		//
+		String changeUsername = "changeUsername";
+		String changeInformation = "changeInformation";
+		UpdateMemberInformationDto updatedMemberInformationDto = new UpdateMemberInformationDto(changeUsername,
+			changeInformation);
+
+		// when
+		memberPersistenceAdapter.updateMemberInformation(Objects.requireNonNull(savedMember.getMemberId()),
+			updatedMemberInformationDto);
+
+		// then
+		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
+			Objects.requireNonNull(savedMember.getId()));
+
+		assertThat(findMemberOptional).isNotEmpty();
+		assertThat(findMemberOptional.get())
+			.extracting("username", "introduction")
+			.containsExactly(changeUsername, changeInformation);
+	}
+
 	private @NotNull Member createMember(String email, String phoneNumber) {
 		return new Member(null, "memberId", "username", email, "password", phoneNumber, "introduction",
+			null, RoleLevel.USER_GENERAL, LocalDateTime.now(), LocalDateTime.now());
+	}
+
+	private @NotNull Member createMemberUsernameAndIntroduction(String username, String introduction) {
+		return new Member(null, "memberId", username, "waterkite94@gmail.com", "password", "00011112222", introduction,
 			null, RoleLevel.USER_GENERAL, LocalDateTime.now(), LocalDateTime.now());
 	}
 }
