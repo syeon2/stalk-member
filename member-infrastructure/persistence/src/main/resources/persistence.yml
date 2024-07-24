@@ -16,6 +16,7 @@ spring:
     properties:
       hibernate:
         show_sql: true
+    open-in-view: false
 
 logging:
   level:
@@ -35,12 +36,12 @@ spring:
     password: 1234
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         show_sql: true
+    open-in-view: false
 
 logging:
   level:
@@ -58,3 +59,4 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
+    open-in-view: false
