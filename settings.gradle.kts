@@ -9,7 +9,7 @@ include(
     "member-infrastructure:redis",
     "member-common:exception",
     "member-common:mail",
-    "support:security",
+    "member-common:encrypt",
     "support:msa-core",
     "support:monitor"
 )
