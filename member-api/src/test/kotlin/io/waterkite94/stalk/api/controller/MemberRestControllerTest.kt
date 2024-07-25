@@ -140,6 +140,26 @@ class MemberRestControllerTest : ControllerTestSupport() {
             .andExpect(jsonPath("$.data").exists())
     }
 
+    @Test
+    @WithMockUser(roles = ["USER"])
+    fun changeMemberProfileImageUrlApi() {
+        // given
+        val memberId = "memberId"
+        val profileImageUrl = "profileImageUrl"
+
+        // when  // then
+        mockMvc
+            .perform(
+                put("/api/v1/member/$memberId/profile-image-url/$profileImageUrl")
+                    .with(csrf())
+                    .param("memberId", memberId)
+                    .param("profileImageUrl", profileImageUrl)
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+    }
+
     private fun requestDto() =
         CreateMemberRequest(
             "firstName",

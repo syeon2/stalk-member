@@ -67,4 +67,14 @@ class MemberRestController(
 
         return ApiResponse.success("success")
     }
+
+    @PutMapping("/member/{memberId}/profile-image-url/{profileImageUrl}")
+    fun changeMemberProfileImageUrl(
+        @PathVariable memberId: String,
+        @PathVariable profileImageUrl: String
+    ): ApiResponse<String> {
+        changeMemberProfile.changeProfileImageUrl(memberId, profileImageUrl)
+
+        return ApiResponse.success("success")
+    }
 }
