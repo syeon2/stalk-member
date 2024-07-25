@@ -1,5 +1,6 @@
 package io.waterkite94.stalk.domain.model
 
+import io.waterkite94.stalk.domain.vo.MemberStatus
 import io.waterkite94.stalk.domain.vo.RoleLevel
 import java.time.LocalDateTime
 
@@ -13,6 +14,7 @@ data class Member(
     val introduction: String,
     val profileImageUrl: String? = null,
     var roleLevel: RoleLevel? = RoleLevel.USER_GENERAL,
+    var memberStatus: MemberStatus? = MemberStatus.ACTIVE,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
 ) {
@@ -21,4 +23,6 @@ data class Member(
     fun withPassword(password: String): Member = copy(password = password)
 
     fun withRoleLevel(roleLevel: RoleLevel): Member = copy(roleLevel = roleLevel)
+
+    fun withMemberStatus(status: MemberStatus): Member = copy(memberStatus = status)
 }

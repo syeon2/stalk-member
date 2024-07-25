@@ -2,6 +2,7 @@ package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.domain.vo.MemberStatus
 import io.waterkite94.stalk.domain.vo.RoleLevel
 import io.waterkite94.stalk.usecase.IntegrationTestSupport
 import org.assertj.core.api.Assertions.assertThat
@@ -136,6 +137,21 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         verify(memberPersistencePort).updateProfileImageUrl(memberId, profileImageUrl)
     }
 
+    @Test
+    @DisplayName(value = "계정 상태를 비활성화로 변경합니다.")
+    fun changeStatusInactive() {
+        // given
+        val memberId = "memberId"
+
+        doNothing().whenever(memberPersistencePort).updateStatusInactive(memberId)
+
+        // when
+        changeMemberService.changeStatusInactive(memberId)
+
+        // then
+        verify(memberPersistencePort).updateStatusInactive(memberId)
+    }
+
     private fun createMemberDto(email: String) =
         Member(
             1L,
@@ -147,6 +163,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
             "introduction",
             "profileImageUrl",
             RoleLevel.USER_GENERAL,
+            MemberStatus.ACTIVE,
             LocalDateTime.now(),
             LocalDateTime.now()
         )

@@ -19,4 +19,6 @@ interface ChangeMemberProfile {
         memberId: String,
         profileImageUrl: String
     )
+
+    fun changeStatusInactive(memberId: String)
 }

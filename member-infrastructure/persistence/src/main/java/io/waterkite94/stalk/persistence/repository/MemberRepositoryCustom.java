@@ -9,4 +9,6 @@ public interface MemberRepositoryCustom {
 	void updatePassword(String email, String password);
 
 	void updateProfileImageUrl(String memberId, String profileImageUrl);
+
+	void updateInactiveStatus(String memberId);
 }
