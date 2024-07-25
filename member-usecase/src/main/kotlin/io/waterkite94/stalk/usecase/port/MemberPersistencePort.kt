@@ -11,6 +11,8 @@ interface MemberPersistencePort {
         phoneNumber: String
     ): Member?
 
+    fun findMemberByEmail(email: String): Member?
+
     fun updateMemberInformation(
         memberId: String,
         memberInformationDto: UpdateMemberInformationDto
@@ -20,6 +22,4 @@ interface MemberPersistencePort {
         email: String,
         password: String
     )
-
-    fun findMemberByEmail(email: String): Member?
 }
