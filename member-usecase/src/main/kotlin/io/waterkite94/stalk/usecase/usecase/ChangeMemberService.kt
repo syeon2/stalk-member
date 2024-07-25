@@ -1,6 +1,7 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
+import io.waterkite94.stalk.domain.model.UpdatePasswordDto
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
 import io.waterkite94.stalk.exception.InvalidPasswordException
 import io.waterkite94.stalk.exception.MemberNotFoundException
@@ -21,16 +22,14 @@ class ChangeMemberService(
         return updateMemberProfileDto
     }
 
-    override fun changeMemberPassword(
-        email: String,
-        currentPassword: String,
-        newPassword: String,
-        checkNewPassword: String
-    ) {
-        validateEmailAndPassword(email, currentPassword)
-        validatePasswordsMatch(newPassword, checkNewPassword)
+    override fun changeMemberPassword(updatePasswordDto: UpdatePasswordDto) {
+        validateEmailAndPassword(updatePasswordDto.email, updatePasswordDto.currentPassword)
+        validatePasswordsMatch(updatePasswordDto.newPassword, updatePasswordDto.checkNewPassword)
 
-        memberPersistencePort.updatePassword(email, securityUtil.encryptPassword(newPassword))
+        memberPersistencePort.updatePassword(
+            updatePasswordDto.email,
+            securityUtil.encryptPassword(updatePasswordDto.newPassword)
+        )
     }
 
     override fun changeProfileImageUrl(

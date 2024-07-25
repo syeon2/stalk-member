@@ -1,6 +1,7 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
+import io.waterkite94.stalk.domain.model.UpdatePasswordDto
 
 interface ChangeMember {
     fun changeMemberProfile(
@@ -8,12 +9,7 @@ interface ChangeMember {
         updateMemberProfileDto: UpdateMemberProfileDto
     ): UpdateMemberProfileDto
 
-    fun changeMemberPassword(
-        email: String,
-        currentPassword: String,
-        newPassword: String,
-        checkNewPassword: String
-    )
+    fun changeMemberPassword(updatePasswordDto: UpdatePasswordDto)
 
     fun changeProfileImageUrl(
         memberId: String,

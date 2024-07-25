@@ -11,21 +11,22 @@ import io.waterkite94.stalk.usecase.usecase.ChangeMember
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/members")
 class MemberRestController(
     private val createMember: CreateMember,
     private val changeMember: ChangeMember,
     private val verifyEmail: VerifyEmail
 ) {
-    @PostMapping("/members")
+    @PostMapping
     fun createMemberApi(
         @Valid @RequestBody request: CreateMemberRequest
     ): ApiResponse<CreateMemberResponse> {
@@ -35,55 +36,50 @@ class MemberRestController(
         return ApiResponse.success(CreateMemberResponse.toResponse(createdMember))
     }
 
-    @PostMapping("/member/verification-email/{email}")
+    @PostMapping("/verification-email/{email}")
     fun verifyEmailApi(
         @PathVariable email: String
     ): ApiResponse<VerifyEmailResponse> {
-        val fromEmail = verifyEmail.verifyEmail(email)
+        val toEmail = verifyEmail.verifyEmail(email)
 
-        return ApiResponse.success(VerifyEmailResponse(fromEmail))
+        return ApiResponse.success(VerifyEmailResponse(toEmail))
     }
 
-    @PostMapping("/member/{memberId}")
+    @PatchMapping("/{memberId}")
     fun changeMemberProfileApi(
         @PathVariable memberId: String,
-        @RequestBody request: UpdateMemberRequest
+        @Valid @RequestBody request: UpdateMemberRequest
     ): ApiResponse<UpdateMemberProfileDto> {
         val changedMemberProfile = changeMember.changeMemberProfile(memberId, request.toDto())
 
         return ApiResponse.success(changedMemberProfile)
     }
 
-    @PutMapping("/member/password")
+    @PatchMapping("/password")
     fun changeMemberPasswordApi(
-        @RequestBody request: ChangeMemberPasswordRequest
+        @Valid @RequestBody request: ChangeMemberPasswordRequest
     ): ApiResponse<String> {
-        changeMember.changeMemberPassword(
-            request.email,
-            request.currentPassword,
-            request.newPassword,
-            request.checkNewPassword
-        )
+        changeMember.changeMemberPassword(request.toDto())
 
-        return ApiResponse.success("success")
+        return ApiResponse.success("Password updated successfully")
     }
 
-    @PutMapping("/member/{memberId}/profile-image-url/{profileImageUrl}")
+    @PatchMapping("/{memberId}/profile-image")
     fun changeMemberProfileImageUrlApi(
         @PathVariable memberId: String,
-        @PathVariable profileImageUrl: String
+        @RequestParam profileImageUrl: String
     ): ApiResponse<String> {
         changeMember.changeProfileImageUrl(memberId, profileImageUrl)
 
-        return ApiResponse.success("success")
+        return ApiResponse.success("Profile Image Url updated successfully")
     }
 
-    @PutMapping("/member/{memberId}/inactive")
+    @PatchMapping("/{memberId}/status/inactive")
     fun changeMemberStatusInactiveApi(
         @PathVariable memberId: String
     ): ApiResponse<String> {
         changeMember.changeStatusInactive(memberId)
 
-        return ApiResponse.success("success")
+        return ApiResponse.success("Member status set to inactive")
     }
 }

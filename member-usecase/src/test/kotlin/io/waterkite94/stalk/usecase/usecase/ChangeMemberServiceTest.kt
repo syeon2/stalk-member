@@ -2,6 +2,7 @@ package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
+import io.waterkite94.stalk.domain.model.UpdatePasswordDto
 import io.waterkite94.stalk.domain.type.MemberStatus
 import io.waterkite94.stalk.domain.type.RoleLevel
 import io.waterkite94.stalk.exception.InvalidPasswordException
@@ -49,6 +50,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         val newPassword = "newPassword"
         val checkNewPassword = "newPassword"
         val encryptedPassword = "encryptedPassword"
+        val updatePasswordDto = UpdatePasswordDto(email, currentPassword, newPassword, checkNewPassword)
 
         val member = createMemberDto(email)
 
@@ -57,7 +59,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         given(securityUtil.encryptPassword(newPassword)).willReturn(encryptedPassword)
 
         // when
-        changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
+        changeMemberService.changeMemberPassword(updatePasswordDto)
 
         // then
         verify(memberPersistencePort).updatePassword(email, encryptedPassword)
@@ -71,12 +73,13 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         val currentPassword = "currentPassword"
         val newPassword = "newPassword"
         val checkNewPassword = "newPassword"
+        val updatePasswordDto = UpdatePasswordDto(email, currentPassword, newPassword, checkNewPassword)
 
         given(memberPersistencePort.findMemberByEmail(email)).willReturn(null)
 
         // when  // then
         assertThatThrownBy {
-            changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
+            changeMemberService.changeMemberPassword(updatePasswordDto)
         }.isInstanceOf(MemberNotFoundException::class.java)
             .hasMessage("Member not found: $email")
     }
@@ -89,6 +92,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         val currentPassword = "currentPassword"
         val newPassword = "newPassword"
         val checkNewPassword = "newPassword"
+        val updatePasswordDto = UpdatePasswordDto(email, currentPassword, newPassword, checkNewPassword)
 
         val member = createMemberDto(email)
 
@@ -97,7 +101,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
 
         // when  // then
         assertThatThrownBy {
-            changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
+            changeMemberService.changeMemberPassword(updatePasswordDto)
         }.isInstanceOf(InvalidPasswordException::class.java)
             .hasMessage("Password does not match current: $currentPassword")
     }
@@ -110,6 +114,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         val currentPassword = "currentPassword"
         val newPassword = "newPassword"
         val checkNewPassword = "notEqualsNewPassword"
+        val updatePasswordDto = UpdatePasswordDto(email, currentPassword, newPassword, checkNewPassword)
 
         val member = createMemberDto(email)
 
@@ -118,7 +123,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
 
         // when  // then
         assertThatThrownBy {
-            changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
+            changeMemberService.changeMemberPassword(updatePasswordDto)
         }.isInstanceOf(InvalidPasswordException::class.java)
             .hasMessage("checkNewPassword must match newPassword")
     }

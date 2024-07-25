@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
-@ComponentScan(basePackages = ["io.waterkite94.stalk.encrypt", "io.waterkite94.stalk.api"])
+@ComponentScan(basePackages = ["io.waterkite94.stalk"])
 @EnableWebSecurity
 class WebConfig(
     private val passwordEncoder: PasswordEncoder,

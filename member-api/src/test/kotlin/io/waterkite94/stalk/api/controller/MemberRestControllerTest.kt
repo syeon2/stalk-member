@@ -13,13 +13,14 @@ import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
+import org.mockito.kotlin.any
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -74,7 +75,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
         // when   // then
         mockMvc
             .perform(
-                post("/api/v1/member/verification-email/$email")
+                post("/api/v1/members/verification-email/$email")
                     .with(csrf())
                     .param("email", email)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +98,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
         // when   // then
         mockMvc
             .perform(
-                post("/api/v1/member/$memberId")
+                patch("/api/v1/members/$memberId")
                     .with(csrf())
                     .param("memberId", memberId)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -115,26 +116,19 @@ class MemberRestControllerTest : ControllerTestSupport() {
         // given
         val request = ChangeMemberPasswordRequest("email@email.com", "currentPassword", "newPassword", "newPassword")
 
-        doNothing()
-            .`when`(
-                changeMember
-            ).changeMemberPassword(
-                request.email,
-                request.currentPassword,
-                request.newPassword,
-                request.checkNewPassword
-            )
+        doNothing().`when`(changeMember).changeMemberPassword(any())
 
         // when   // then
         mockMvc
             .perform(
-                put("/api/v1/member/password")
+                patch("/api/v1/members/password")
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data").isString)
+            .andExpect(jsonPath("$.data").value("Password updated successfully"))
     }
 
     @Test
@@ -147,14 +141,15 @@ class MemberRestControllerTest : ControllerTestSupport() {
         // when  // then
         mockMvc
             .perform(
-                put("/api/v1/member/$memberId/profile-image-url/$profileImageUrl")
+                patch("/api/v1/members/$memberId/profile-image")
                     .with(csrf())
                     .param("memberId", memberId)
-                    .param("profileImageUrl", profileImageUrl)
+                    .queryParam("profileImageUrl", profileImageUrl)
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data").value("Profile Image Url updated successfully"))
     }
 
     @Test
@@ -166,13 +161,14 @@ class MemberRestControllerTest : ControllerTestSupport() {
         // when  // then
         mockMvc
             .perform(
-                put("/api/v1/member/$memberId/inactive")
+                patch("/api/v1/members/$memberId/status/inactive")
                     .with(csrf())
                     .param("memberId", memberId)
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data").value("Member status set to inactive"))
     }
 
     private fun requestDto() =
