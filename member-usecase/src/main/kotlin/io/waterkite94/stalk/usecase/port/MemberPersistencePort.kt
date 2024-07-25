@@ -22,4 +22,9 @@ interface MemberPersistencePort {
         email: String,
         password: String
     )
+
+    fun updateProfileImageUrl(
+        memberId: String,
+        profileImageUrl: String
+    )
 }

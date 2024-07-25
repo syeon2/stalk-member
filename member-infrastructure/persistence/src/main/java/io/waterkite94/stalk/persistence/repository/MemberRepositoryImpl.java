@@ -39,4 +39,14 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 			.where(memberEntity.email.eq(email))
 			.execute();
 	}
+
+	@Override
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	public void updateProfileImageUrl(String memberId, String profileImageUrl) {
+		queryFactory.update(memberEntity)
+			.set(memberEntity.profileImageUrl, profileImageUrl)
+			.where(memberEntity.memberId.eq(memberId))
+			.execute();
+	}
 }

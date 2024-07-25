@@ -151,18 +151,37 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
 		assertThat(memberRepository.findAll().size()).isEqualTo(1);
 
-		String email = savedMember.getEmail();
-		String password = savedMember.getPassword();
-
 		// when
-		memberPersistenceAdapter.updatePassword(email, "changedPassword");
+		memberPersistenceAdapter.updatePassword(savedMember.getEmail(), "changedPassword");
 
 		// then
 		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
 			Objects.requireNonNull(savedMember.getId()));
 
-		assertThat(findMemberOptional).isNotEmpty();
+		assertThat(findMemberOptional).isPresent();
 		assertThat(findMemberOptional.get().getPassword()).isNotEqualTo(savedMember.getPassword());
+	}
+
+	@Test
+	@DisplayName(value = "회원 프로필 URL을 변경합니다.")
+	void updateProfileImageUrl() {
+		// given
+		Member member = createMember("waterkite94@gmail.com", "00011112222");
+		Member savedMember = memberPersistenceAdapter.save(member);
+
+		assertThat(memberRepository.findAll().size()).isEqualTo(1);
+
+		// when
+		memberPersistenceAdapter.updateProfileImageUrl(
+			Objects.requireNonNull(savedMember.getMemberId()),
+			"changedProfileImageUrl");
+
+		// then
+		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
+			Objects.requireNonNull(savedMember.getId()));
+
+		assertThat(findMemberOptional).isPresent();
+		assertThat(findMemberOptional.get().getProfileImageUrl()).isNotEqualTo(savedMember.getProfileImageUrl());
 	}
 
 	private @NotNull Member createMember(String email, String phoneNumber) {

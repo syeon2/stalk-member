@@ -54,4 +54,9 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	public void updatePassword(@NotNull String email, @NotNull String password) {
 		memberRepository.updatePassword(email, password);
 	}
+
+	@Override
+	public void updateProfileImageUrl(@NotNull String memberId, @NotNull String profileImageUrl) {
+		memberRepository.updateProfileImageUrl(memberId, profileImageUrl);
+	}
 }
