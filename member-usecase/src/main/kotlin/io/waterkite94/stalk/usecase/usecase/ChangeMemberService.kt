@@ -38,6 +38,10 @@ class ChangeMemberService(
         memberPersistencePort.updateProfileImageUrl(memberId, profileImageUrl)
     }
 
+    override fun changeStatusInactive(memberId: String) {
+        memberPersistencePort.updateStatusInactive(memberId)
+    }
+
     private fun validatePasswordsMatch(
         newPassword: String,
         checkNewPassword: String

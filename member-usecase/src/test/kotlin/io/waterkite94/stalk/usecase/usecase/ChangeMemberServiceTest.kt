@@ -137,6 +137,21 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         verify(memberPersistencePort).updateProfileImageUrl(memberId, profileImageUrl)
     }
 
+    @Test
+    @DisplayName(value = "계정 상태를 비활성화로 변경합니다.")
+    fun changeStatusInactive() {
+        // given
+        val memberId = "memberId"
+
+        doNothing().whenever(memberPersistencePort).updateStatusInactive(memberId)
+
+        // when
+        changeMemberService.changeStatusInactive(memberId)
+
+        // then
+        verify(memberPersistencePort).updateStatusInactive(memberId)
+    }
+
     private fun createMemberDto(email: String) =
         Member(
             1L,
