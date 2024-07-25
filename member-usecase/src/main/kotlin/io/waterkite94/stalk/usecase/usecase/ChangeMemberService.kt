@@ -31,6 +31,13 @@ class ChangeMemberService(
         memberPersistencePort.updatePassword(email, securityUtil.encryptPassword(newPassword))
     }
 
+    override fun changeProfileImageUrl(
+        memberId: String,
+        profileImageUrl: String
+    ) {
+        memberPersistencePort.updateProfileImageUrl(memberId, profileImageUrl)
+    }
+
     private fun validatePasswordsMatch(
         newPassword: String,
         checkNewPassword: String

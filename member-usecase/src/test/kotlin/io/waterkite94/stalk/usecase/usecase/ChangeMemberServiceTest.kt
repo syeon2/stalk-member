@@ -120,6 +120,22 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
             .hasMessage("check change passwords must match password")
     }
 
+    @Test
+    @DisplayName(value = "회원의 프로필 이미지 URL을 변경합니다.")
+    fun changeProfileImageUrl() {
+        // given
+        val memberId = "memberId"
+        val profileImageUrl = "profileImageUrl"
+
+        doNothing().whenever(memberPersistencePort).updateProfileImageUrl(memberId, profileImageUrl)
+
+        // when
+        changeMemberService.changeProfileImageUrl(memberId, profileImageUrl)
+
+        // then
+        verify(memberPersistencePort).updateProfileImageUrl(memberId, profileImageUrl)
+    }
+
     private fun createMemberDto(email: String) =
         Member(
             1L,

@@ -14,4 +14,9 @@ interface ChangeMemberProfile {
         newPassword: String,
         checkNewPassword: String
     )
+
+    fun changeProfileImageUrl(
+        memberId: String,
+        profileImageUrl: String
+    )
 }
