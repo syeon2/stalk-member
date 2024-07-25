@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
-import io.waterkite94.stalk.domain.vo.MemberStatus;
-import io.waterkite94.stalk.domain.vo.RoleLevel;
+import io.waterkite94.stalk.domain.type.MemberStatus;
+import io.waterkite94.stalk.domain.type.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
 

@@ -1,8 +1,8 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.vo.MemberStatus
-import io.waterkite94.stalk.domain.vo.RoleLevel
+import io.waterkite94.stalk.domain.type.MemberStatus
+import io.waterkite94.stalk.domain.type.RoleLevel
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
 import io.waterkite94.stalk.exception.DuplicatedMemberException
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort

@@ -10,7 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
-import io.waterkite94.stalk.domain.vo.MemberStatus;
+import io.waterkite94.stalk.domain.type.MemberStatus;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})

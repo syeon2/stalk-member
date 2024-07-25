@@ -1,7 +1,7 @@
 package io.waterkite94.stalk.persistence.entity;
 
-import io.waterkite94.stalk.domain.vo.MemberStatus;
-import io.waterkite94.stalk.domain.vo.RoleLevel;
+import io.waterkite94.stalk.domain.type.MemberStatus;
+import io.waterkite94.stalk.domain.type.RoleLevel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

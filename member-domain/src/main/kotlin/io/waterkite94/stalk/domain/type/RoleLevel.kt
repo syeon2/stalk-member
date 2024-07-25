@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.domain.vo
+package io.waterkite94.stalk.domain.type
 
 enum class RoleLevel {
     USER_GENERAL,
