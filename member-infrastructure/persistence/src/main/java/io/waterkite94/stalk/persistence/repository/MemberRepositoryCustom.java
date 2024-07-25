@@ -5,4 +5,6 @@ import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
 public interface MemberRepositoryCustom {
 
 	void updateInformation(String memberId, UpdateMemberInformationDto updateMemberInformationDto);
+
+	void updatePassword(String email, String password);
 }

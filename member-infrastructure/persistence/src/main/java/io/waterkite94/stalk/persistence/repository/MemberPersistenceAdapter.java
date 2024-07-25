@@ -36,17 +36,22 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
 	}
 
-	@Override
-	public void updateMemberInformation(@NotNull String memberId,
-		@NotNull UpdateMemberInformationDto memberInformationDto) {
-		memberRepository.updateInformation(memberId, memberInformationDto);
-	}
-
 	@Nullable
 	@Override
 	public Member findMemberByEmail(@NotNull String email) {
 		Optional<MemberEntity> findMemberOptional = memberRepository.findMemberByEmail(email);
 
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
+	}
+
+	@Override
+	public void updateMemberInformation(@NotNull String memberId,
+		@NotNull UpdateMemberInformationDto memberInformationDto) {
+		memberRepository.updateInformation(memberId, memberInformationDto);
+	}
+
+	@Override
+	public void updatePassword(@NotNull String email, @NotNull String password) {
+		memberRepository.updatePassword(email, password);
 	}
 }

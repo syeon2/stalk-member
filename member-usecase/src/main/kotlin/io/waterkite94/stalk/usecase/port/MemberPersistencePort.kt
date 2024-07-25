@@ -16,5 +16,10 @@ interface MemberPersistencePort {
         memberInformationDto: UpdateMemberInformationDto
     )
 
+    fun updatePassword(
+        email: String,
+        password: String
+    )
+
     fun findMemberByEmail(email: String): Member?
 }
