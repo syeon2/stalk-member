@@ -1,5 +1,6 @@
 package io.waterkite94.stalk.api.controller
 
+import io.waterkite94.stalk.api.dto.request.ChangeMemberPasswordRequest
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
 import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.api.dto.response.ApiResponse
@@ -12,6 +13,7 @@ import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -50,5 +52,29 @@ class MemberRestController(
         val changedMemberProfile = changeMemberProfile.changeMemberProfile(memberId, request.toDto())
 
         return ApiResponse.success(changedMemberProfile)
+    }
+
+    @PutMapping("/member/password")
+    fun changeMemberPasswordApi(
+        @RequestBody request: ChangeMemberPasswordRequest
+    ): ApiResponse<String> {
+        changeMemberProfile.changeMemberPassword(
+            request.email,
+            request.currentPassword,
+            request.newPassword,
+            request.checkNewPassword
+        )
+
+        return ApiResponse.success("success")
+    }
+
+    @PutMapping("/member/{memberId}/profile-image-url/{profileImageUrl}")
+    fun changeMemberProfileImageUrl(
+        @PathVariable memberId: String,
+        @PathVariable profileImageUrl: String
+    ): ApiResponse<String> {
+        changeMemberProfile.changeProfileImageUrl(memberId, profileImageUrl)
+
+        return ApiResponse.success("success")
     }
 }

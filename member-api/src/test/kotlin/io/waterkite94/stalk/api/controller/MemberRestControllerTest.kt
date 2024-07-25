@@ -1,6 +1,7 @@
 package io.waterkite94.stalk.api.controller
 
 import io.waterkite94.stalk.api.ControllerTestSupport
+import io.waterkite94.stalk.api.dto.request.ChangeMemberPasswordRequest
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
 import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
@@ -9,6 +10,7 @@ import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -17,6 +19,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -107,6 +110,54 @@ class MemberRestControllerTest : ControllerTestSupport() {
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.username").isString)
             .andExpect(jsonPath("$.data.introduction").isString)
+    }
+
+    @Test
+    @WithMockUser(roles = ["USER"])
+    fun changeMemberPasswordApi() {
+        // given
+        val request = ChangeMemberPasswordRequest("email@email.com", "currentPassword", "newPassword", "newPassword")
+
+        doNothing()
+            .`when`(
+                changeMemberProfile
+            ).changeMemberPassword(
+                request.email,
+                request.currentPassword,
+                request.newPassword,
+                request.checkNewPassword
+            )
+
+        // when   // then
+        mockMvc
+            .perform(
+                put("/api/v1/member/password")
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+    }
+
+    @Test
+    @WithMockUser(roles = ["USER"])
+    fun changeMemberProfileImageUrlApi() {
+        // given
+        val memberId = "memberId"
+        val profileImageUrl = "profileImageUrl"
+
+        // when  // then
+        mockMvc
+            .perform(
+                put("/api/v1/member/$memberId/profile-image-url/$profileImageUrl")
+                    .with(csrf())
+                    .param("memberId", memberId)
+                    .param("profileImageUrl", profileImageUrl)
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
     }
 
     private fun requestDto() =

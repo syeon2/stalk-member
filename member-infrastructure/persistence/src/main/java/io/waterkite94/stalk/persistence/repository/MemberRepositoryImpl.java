@@ -29,4 +29,24 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 		update.where(memberEntity.memberId.eq(memberId))
 			.execute();
 	}
+
+	@Override
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	public void updatePassword(String email, String password) {
+		queryFactory.update(memberEntity)
+			.set(memberEntity.password, password)
+			.where(memberEntity.email.eq(email))
+			.execute();
+	}
+
+	@Override
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	public void updateProfileImageUrl(String memberId, String profileImageUrl) {
+		queryFactory.update(memberEntity)
+			.set(memberEntity.profileImageUrl, profileImageUrl)
+			.where(memberEntity.memberId.eq(memberId))
+			.execute();
+	}
 }

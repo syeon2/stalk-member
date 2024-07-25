@@ -96,6 +96,24 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 	}
 
 	@Test
+	@Transactional
+	@DisplayName(value = "이메일을 통해 회원 엔티티를 조회합니다.")
+	void findMemberByEmail() {
+		// given
+		String email = "email";
+		Member member = createMember(email, "00011112222");
+		Member savedMember = memberPersistenceAdapter.save(member);
+
+		assertThat(memberRepository.findAll().size()).isEqualTo(1);
+
+		// when
+		Member findMember = memberPersistenceAdapter.findMemberByEmail(email);
+
+		// then
+		assertThat(findMember).isEqualTo(savedMember);
+	}
+
+	@Test
 	@DisplayName(value = "회원 정보를 수정합니다.")
 	void updateMemberInformation() {
 		// given
@@ -122,6 +140,48 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		assertThat(findMemberOptional.get())
 			.extracting("username", "introduction")
 			.containsExactly(changeUsername, changeInformation);
+	}
+
+	@Test
+	@DisplayName(value = "비밀번호를 변경합니다.")
+	void updatePassword() {
+		// given
+		Member member = createMember("waterkite94@gmail.com", "00011112222");
+		Member savedMember = memberPersistenceAdapter.save(member);
+
+		assertThat(memberRepository.findAll().size()).isEqualTo(1);
+
+		// when
+		memberPersistenceAdapter.updatePassword(savedMember.getEmail(), "changedPassword");
+
+		// then
+		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
+			Objects.requireNonNull(savedMember.getId()));
+
+		assertThat(findMemberOptional).isPresent();
+		assertThat(findMemberOptional.get().getPassword()).isNotEqualTo(savedMember.getPassword());
+	}
+
+	@Test
+	@DisplayName(value = "회원 프로필 URL을 변경합니다.")
+	void updateProfileImageUrl() {
+		// given
+		Member member = createMember("waterkite94@gmail.com", "00011112222");
+		Member savedMember = memberPersistenceAdapter.save(member);
+
+		assertThat(memberRepository.findAll().size()).isEqualTo(1);
+
+		// when
+		memberPersistenceAdapter.updateProfileImageUrl(
+			Objects.requireNonNull(savedMember.getMemberId()),
+			"changedProfileImageUrl");
+
+		// then
+		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
+			Objects.requireNonNull(savedMember.getId()));
+
+		assertThat(findMemberOptional).isPresent();
+		assertThat(findMemberOptional.get().getProfileImageUrl()).isNotEqualTo(savedMember.getProfileImageUrl());
 	}
 
 	private @NotNull Member createMember(String email, String phoneNumber) {

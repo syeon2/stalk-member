@@ -7,4 +7,16 @@ interface ChangeMemberProfile {
         memberId: String,
         updateMemberInformationDto: UpdateMemberInformationDto
     ): UpdateMemberInformationDto
+
+    fun changeMemberPassword(
+        email: String,
+        currentPassword: String,
+        newPassword: String,
+        checkNewPassword: String
+    )
+
+    fun changeProfileImageUrl(
+        memberId: String,
+        profileImageUrl: String
+    )
 }

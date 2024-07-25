@@ -9,4 +9,6 @@ import io.waterkite94.stalk.persistence.entity.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long>, MemberRepositoryCustom {
 
 	Optional<MemberEntity> findMemberByEmailOrPhoneNumber(String email, String phoneNumber);
+
+	Optional<MemberEntity> findMemberByEmail(String email);
 }
