@@ -1,9 +1,11 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
 import io.waterkite94.stalk.domain.type.MemberStatus
 import io.waterkite94.stalk.domain.type.RoleLevel
+import io.waterkite94.stalk.exception.InvalidPasswordException
+import io.waterkite94.stalk.exception.MemberNotFoundException
 import io.waterkite94.stalk.usecase.IntegrationTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -27,7 +29,7 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         val memberId: String = "memberId"
         val updateDto = createUpdateDto()
 
-        doNothing().whenever(memberPersistencePort).updateMemberInformation(memberId, updateDto)
+        doNothing().whenever(memberPersistencePort).updateMemberProfile(memberId, updateDto)
 
         // when
         val changedMemberDto = changeMemberService.changeMemberProfile(memberId, updateDto)
@@ -75,8 +77,8 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         // when  // then
         assertThatThrownBy {
             changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
-        }.isInstanceOf(RuntimeException::class.java)
-            .hasMessage("Unable to find member by email: $email")
+        }.isInstanceOf(MemberNotFoundException::class.java)
+            .hasMessage("Member not found: $email")
     }
 
     @Test
@@ -96,8 +98,8 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         // when  // then
         assertThatThrownBy {
             changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
-        }.isInstanceOf(RuntimeException::class.java)
-            .hasMessage("Wrong password")
+        }.isInstanceOf(InvalidPasswordException::class.java)
+            .hasMessage("Password does not match current: $currentPassword")
     }
 
     @Test
@@ -117,8 +119,8 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
         // when  // then
         assertThatThrownBy {
             changeMemberService.changeMemberPassword(email, currentPassword, newPassword, checkNewPassword)
-        }.isInstanceOf(RuntimeException::class.java)
-            .hasMessage("check change passwords must match password")
+        }.isInstanceOf(InvalidPasswordException::class.java)
+            .hasMessage("checkNewPassword must match newPassword")
     }
 
     @Test
@@ -168,5 +170,5 @@ class ChangeMemberServiceTest : IntegrationTestSupport() {
             LocalDateTime.now()
         )
 
-    private fun createUpdateDto() = UpdateMemberInformationDto("username", "introduction")
+    private fun createUpdateDto() = UpdateMemberProfileDto("username", "introduction")
 }

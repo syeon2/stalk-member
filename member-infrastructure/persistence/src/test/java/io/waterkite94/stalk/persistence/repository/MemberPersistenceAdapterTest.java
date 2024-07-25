@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto;
 import io.waterkite94.stalk.domain.type.MemberStatus;
 import io.waterkite94.stalk.domain.type.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
@@ -120,11 +120,11 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		//
 		String changeUsername = "changeUsername";
 		String changeInformation = "changeInformation";
-		UpdateMemberInformationDto updatedMemberInformationDto = new UpdateMemberInformationDto(changeUsername,
+		UpdateMemberProfileDto updatedMemberInformationDto = new UpdateMemberProfileDto(changeUsername,
 			changeInformation);
 
 		// when
-		memberPersistenceAdapter.updateMemberInformation(Objects.requireNonNull(savedMember.getMemberId()),
+		memberPersistenceAdapter.updateMemberProfile(Objects.requireNonNull(savedMember.getMemberId()),
 			updatedMemberInformationDto);
 
 		// then

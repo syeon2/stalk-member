@@ -3,9 +3,9 @@ package io.waterkite94.stalk.usecase.usecase
 import io.waterkite94.stalk.usecase.IntegrationTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mockito.doNothing
-import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.verify
 
 class VerifyEmailServiceTest : IntegrationTestSupport() {
@@ -21,7 +21,7 @@ class VerifyEmailServiceTest : IntegrationTestSupport() {
         val title = "회원 가입 인증번호입니다."
         val codeLength = 6
 
-        doReturn(authenticationCode).`when`(mailUtil).createVerificationCode(codeLength)
+        given(mailUtil.createVerificationCode(codeLength)).willReturn(authenticationCode)
         doNothing().`when`(mailUtil).sendMailByJavaMailSender(email, title, authenticationCode)
         doNothing().`when`(authenticationCodePort).saveAuthenticationCode(email, authenticationCode)
 

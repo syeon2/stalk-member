@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto;
 import io.waterkite94.stalk.domain.type.MemberStatus;
 import lombok.RequiredArgsConstructor;
 
@@ -21,11 +21,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 	@Override
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	public void updateInformation(String memberId, UpdateMemberInformationDto updateMemberInformationDto) {
+	public void updateInformation(String memberId, UpdateMemberProfileDto updateMemberProfileDto) {
 		JPAUpdateClause update = queryFactory.update(memberEntity);
 
-		update.set(memberEntity.username, updateMemberInformationDto.getUsername());
-		update.set(memberEntity.introduction, updateMemberInformationDto.getIntroduction());
+		update.set(memberEntity.username, updateMemberProfileDto.getUsername());
+		update.set(memberEntity.introduction, updateMemberProfileDto.getIntroduction());
 
 		update.where(memberEntity.memberId.eq(memberId))
 			.execute();

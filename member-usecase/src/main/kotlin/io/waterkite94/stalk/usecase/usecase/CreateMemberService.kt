@@ -4,7 +4,9 @@ import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.type.MemberStatus
 import io.waterkite94.stalk.domain.type.RoleLevel
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
+import io.waterkite94.stalk.exception.AuthenticationCodeNotFoundException
 import io.waterkite94.stalk.exception.DuplicatedMemberException
+import io.waterkite94.stalk.exception.InvalidAuthenticationException
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort
 import org.springframework.stereotype.Service
@@ -39,14 +41,12 @@ class CreateMemberService(
         email: String,
         emailAuthenticationCode: String
     ) {
-        val authenticationCode = authenticationCodePort.getAuthenticationCode(email)
+        val authenticationCode =
+            authenticationCodePort.getAuthenticationCode(email)
+                ?: throw AuthenticationCodeNotFoundException("Authentication code not found: $email")
 
-        authenticationCode ?: let {
-            throw RuntimeException("Authentication code not found: $email")
-        }
-
-        if (authenticationCode != emailAuthenticationCode) {
-            throw RuntimeException("Authentication code does not match email: $emailAuthenticationCode")
+        require(authenticationCode == emailAuthenticationCode) {
+            throw InvalidAuthenticationException("Authentication code does not match email: $emailAuthenticationCode")
         }
     }
 

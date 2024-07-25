@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Repository;
 
 import io.waterkite94.stalk.domain.model.Member;
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +45,9 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	}
 
 	@Override
-	public void updateMemberInformation(@NotNull String memberId,
-		@NotNull UpdateMemberInformationDto memberInformationDto) {
-		memberRepository.updateInformation(memberId, memberInformationDto);
+	public void updateMemberProfile(@NotNull String memberId,
+		@NotNull UpdateMemberProfileDto memberProfileDto) {
+		memberRepository.updateInformation(memberId, memberProfileDto);
 	}
 
 	@Override

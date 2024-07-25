@@ -6,8 +6,8 @@ import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.api.dto.response.ApiResponse
 import io.waterkite94.stalk.api.dto.response.CreateMemberResponse
 import io.waterkite94.stalk.api.dto.response.VerifyEmailResponse
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
-import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
+import io.waterkite94.stalk.usecase.usecase.ChangeMember
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 class MemberRestController(
     private val createMember: CreateMember,
-    private val changeMemberProfile: ChangeMemberProfile,
+    private val changeMember: ChangeMember,
     private val verifyEmail: VerifyEmail
 ) {
     @PostMapping("/members")
@@ -48,8 +48,8 @@ class MemberRestController(
     fun changeMemberProfileApi(
         @PathVariable memberId: String,
         @RequestBody request: UpdateMemberRequest
-    ): ApiResponse<UpdateMemberInformationDto> {
-        val changedMemberProfile = changeMemberProfile.changeMemberProfile(memberId, request.toDto())
+    ): ApiResponse<UpdateMemberProfileDto> {
+        val changedMemberProfile = changeMember.changeMemberProfile(memberId, request.toDto())
 
         return ApiResponse.success(changedMemberProfile)
     }
@@ -58,7 +58,7 @@ class MemberRestController(
     fun changeMemberPasswordApi(
         @RequestBody request: ChangeMemberPasswordRequest
     ): ApiResponse<String> {
-        changeMemberProfile.changeMemberPassword(
+        changeMember.changeMemberPassword(
             request.email,
             request.currentPassword,
             request.newPassword,
@@ -73,7 +73,7 @@ class MemberRestController(
         @PathVariable memberId: String,
         @PathVariable profileImageUrl: String
     ): ApiResponse<String> {
-        changeMemberProfile.changeProfileImageUrl(memberId, profileImageUrl)
+        changeMember.changeProfileImageUrl(memberId, profileImageUrl)
 
         return ApiResponse.success("success")
     }
@@ -82,7 +82,7 @@ class MemberRestController(
     fun changeMemberStatusInactiveApi(
         @PathVariable memberId: String
     ): ApiResponse<String> {
-        changeMemberProfile.changeStatusInactive(memberId)
+        changeMember.changeStatusInactive(memberId)
 
         return ApiResponse.success("success")
     }

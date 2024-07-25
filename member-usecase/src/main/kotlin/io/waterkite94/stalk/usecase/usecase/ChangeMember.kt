@@ -1,12 +1,12 @@
 package io.waterkite94.stalk.usecase.usecase
 
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
 
-interface ChangeMemberProfile {
+interface ChangeMember {
     fun changeMemberProfile(
         memberId: String,
-        updateMemberInformationDto: UpdateMemberInformationDto
-    ): UpdateMemberInformationDto
+        updateMemberProfileDto: UpdateMemberProfileDto
+    ): UpdateMemberProfileDto
 
     fun changeMemberPassword(
         email: String,

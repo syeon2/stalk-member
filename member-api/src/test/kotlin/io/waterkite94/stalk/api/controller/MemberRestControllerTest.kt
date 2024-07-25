@@ -7,7 +7,7 @@ import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.type.MemberStatus
 import io.waterkite94.stalk.domain.type.RoleLevel
-import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
+import io.waterkite94.stalk.usecase.usecase.ChangeMember
 import io.waterkite94.stalk.usecase.usecase.CreateMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
     private lateinit var verifyEmail: VerifyEmail
 
     @MockBean
-    private lateinit var changeMemberProfile: ChangeMemberProfile
+    private lateinit var changeMember: ChangeMember
 
     @Test
     @WithMockUser(roles = ["USER"])
@@ -91,7 +91,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
         val memberId = "waterkite94@gmail.com"
         val request = UpdateMemberRequest("username", "introduction")
 
-        given(changeMemberProfile.changeMemberProfile(memberId, request.toDto()))
+        given(changeMember.changeMemberProfile(memberId, request.toDto()))
             .willReturn(request.toDto())
 
         // when   // then
@@ -117,7 +117,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
         doNothing()
             .`when`(
-                changeMemberProfile
+                changeMember
             ).changeMemberPassword(
                 request.email,
                 request.currentPassword,

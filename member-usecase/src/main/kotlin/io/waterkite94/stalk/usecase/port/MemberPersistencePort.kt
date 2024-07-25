@@ -1,7 +1,7 @@
 package io.waterkite94.stalk.usecase.port
 
 import io.waterkite94.stalk.domain.model.Member
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
 
 interface MemberPersistencePort {
     fun saveMember(member: Member): Member
@@ -13,9 +13,9 @@ interface MemberPersistencePort {
 
     fun findMemberByEmail(email: String): Member?
 
-    fun updateMemberInformation(
+    fun updateMemberProfile(
         memberId: String,
-        memberInformationDto: UpdateMemberInformationDto
+        memberProfileDto: UpdateMemberProfileDto
     )
 
     fun updatePassword(

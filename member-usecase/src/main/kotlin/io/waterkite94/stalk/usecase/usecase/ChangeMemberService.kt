@@ -1,7 +1,9 @@
 package io.waterkite94.stalk.usecase.usecase
 
-import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
+import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
+import io.waterkite94.stalk.exception.InvalidPasswordException
+import io.waterkite94.stalk.exception.MemberNotFoundException
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort
 import org.springframework.stereotype.Service
 
@@ -9,14 +11,14 @@ import org.springframework.stereotype.Service
 class ChangeMemberService(
     private val memberPersistencePort: MemberPersistencePort,
     private val securityUtil: SecurityUtil
-) : ChangeMemberProfile {
+) : ChangeMember {
     override fun changeMemberProfile(
         memberId: String,
-        updateMemberInformationDto: UpdateMemberInformationDto
-    ): UpdateMemberInformationDto {
-        memberPersistencePort.updateMemberInformation(memberId, updateMemberInformationDto)
+        updateMemberProfileDto: UpdateMemberProfileDto
+    ): UpdateMemberProfileDto {
+        memberPersistencePort.updateMemberProfile(memberId, updateMemberProfileDto)
 
-        return updateMemberInformationDto
+        return updateMemberProfileDto
     }
 
     override fun changeMemberPassword(
@@ -46,8 +48,8 @@ class ChangeMemberService(
         newPassword: String,
         checkNewPassword: String
     ) {
-        if (newPassword != checkNewPassword) {
-            throw RuntimeException("check change passwords must match password")
+        require(newPassword == checkNewPassword) {
+            throw InvalidPasswordException("checkNewPassword must match newPassword")
         }
     }
 
@@ -57,10 +59,10 @@ class ChangeMemberService(
     ) {
         val findMember =
             memberPersistencePort.findMemberByEmail(email)
-                ?: throw RuntimeException("Unable to find member by email: $email")
+                ?: throw MemberNotFoundException("Member not found: $email")
 
-        if (!securityUtil.matchesPassword(currentPassword, findMember.password)) {
-            throw RuntimeException("Wrong password")
+        require(securityUtil.matchesPassword(currentPassword, findMember.password)) {
+            throw InvalidPasswordException("Password does not match current: $currentPassword")
         }
     }
 }

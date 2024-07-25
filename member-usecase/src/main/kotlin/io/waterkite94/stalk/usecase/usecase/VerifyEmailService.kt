@@ -14,6 +14,9 @@ class VerifyEmailService(
     private val mailTitle: String = env.getProperty("spring.mail.title") ?: "회원 가입 인증번호입니다."
     private val codeLength: Int = env.getProperty("spring.mail.codeLength")?.toInt() ?: 6
 
+    /**
+     * Using the @Async Annotation with sendMailByJavaMailSender
+     */
     override fun verifyEmail(email: String): String {
         val authenticationCode = mailUtil.createVerificationCode(codeLength)
 
