@@ -59,4 +59,9 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	public void updateProfileImageUrl(@NotNull String memberId, @NotNull String profileImageUrl) {
 		memberRepository.updateProfileImageUrl(memberId, profileImageUrl);
 	}
+
+	@Override
+	public void updateStatusInactive(@NotNull String memberId) {
+		memberRepository.updateInactiveStatus(memberId);
+	}
 }

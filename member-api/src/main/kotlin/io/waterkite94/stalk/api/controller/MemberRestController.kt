@@ -69,11 +69,20 @@ class MemberRestController(
     }
 
     @PutMapping("/member/{memberId}/profile-image-url/{profileImageUrl}")
-    fun changeMemberProfileImageUrl(
+    fun changeMemberProfileImageUrlApi(
         @PathVariable memberId: String,
         @PathVariable profileImageUrl: String
     ): ApiResponse<String> {
         changeMemberProfile.changeProfileImageUrl(memberId, profileImageUrl)
+
+        return ApiResponse.success("success")
+    }
+
+    @PutMapping("/member/{memberId}/inactive")
+    fun changeMemberStatusInactiveApi(
+        @PathVariable memberId: String
+    ): ApiResponse<String> {
+        changeMemberProfile.changeStatusInactive(memberId)
 
         return ApiResponse.success("success")
     }

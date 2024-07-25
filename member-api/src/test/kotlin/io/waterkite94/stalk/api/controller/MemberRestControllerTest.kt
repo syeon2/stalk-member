@@ -5,6 +5,7 @@ import io.waterkite94.stalk.api.dto.request.ChangeMemberPasswordRequest
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
 import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
+import io.waterkite94.stalk.domain.vo.MemberStatus
 import io.waterkite94.stalk.domain.vo.RoleLevel
 import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
 import io.waterkite94.stalk.usecase.usecase.CreateMember
@@ -12,7 +13,6 @@ import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
@@ -35,9 +35,6 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
     @MockBean
     private lateinit var changeMemberProfile: ChangeMemberProfile
-
-    @Autowired
-    private lateinit var memberRestController: MemberRestController
 
     @Test
     @WithMockUser(roles = ["USER"])
@@ -142,7 +139,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
 
     @Test
     @WithMockUser(roles = ["USER"])
-    fun changeMemberProfileImageUrlApi() {
+    fun changeMemberProfileImageUrlApiApi() {
         // given
         val memberId = "memberId"
         val profileImageUrl = "profileImageUrl"
@@ -154,6 +151,24 @@ class MemberRestControllerTest : ControllerTestSupport() {
                     .with(csrf())
                     .param("memberId", memberId)
                     .param("profileImageUrl", profileImageUrl)
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+    }
+
+    @Test
+    @WithMockUser(roles = ["USER"])
+    fun changeMemberStatusInactiveApi() {
+        // given
+        val memberId = "memberId"
+
+        // when  // then
+        mockMvc
+            .perform(
+                put("/api/v1/member/$memberId/inactive")
+                    .with(csrf())
+                    .param("memberId", memberId)
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
@@ -181,6 +196,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
             "introduction",
             null,
             RoleLevel.USER_GENERAL,
+            MemberStatus.ACTIVE,
             LocalDateTime.now(),
             LocalDateTime.now()
         )

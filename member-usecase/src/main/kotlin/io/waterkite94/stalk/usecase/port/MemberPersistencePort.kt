@@ -27,4 +27,6 @@ interface MemberPersistencePort {
         memberId: String,
         profileImageUrl: String
     )
+
+    fun updateStatusInactive(memberId: String)
 }
