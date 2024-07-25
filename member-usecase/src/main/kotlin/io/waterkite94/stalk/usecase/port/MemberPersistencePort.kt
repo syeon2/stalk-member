@@ -11,10 +11,20 @@ interface MemberPersistencePort {
         phoneNumber: String
     ): Member?
 
+    fun findMemberByEmail(email: String): Member?
+
     fun updateMemberInformation(
         memberId: String,
         memberInformationDto: UpdateMemberInformationDto
     )
 
-    fun findMemberByEmail(email: String): Member?
+    fun updatePassword(
+        email: String,
+        password: String
+    )
+
+    fun updateProfileImageUrl(
+        memberId: String,
+        profileImageUrl: String
+    )
 }
