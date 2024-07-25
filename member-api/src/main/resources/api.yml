@@ -1,6 +1,13 @@
 token:
   expiration_time: 86400000
 
+spring:
+  config:
+    import:
+      - persistence.yml
+      - redis.yml
+      - mail.yml
+
 ---
 spring:
   config:

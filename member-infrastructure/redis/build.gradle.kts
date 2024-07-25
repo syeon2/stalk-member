@@ -6,11 +6,3 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
 }
-
-tasks.getByName("jar") {
-    enabled = true
-}
-
-tasks.getByName("bootJar") {
-    enabled = false
-}

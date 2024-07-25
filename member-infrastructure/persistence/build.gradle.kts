@@ -44,6 +44,3 @@ configurations {
 tasks.getByName<Delete>("clean") {
     delete("src/main/generated")
 }
-
-tasks.getByName("jar").enabled = true
-tasks.getByName("bootJar").enabled = false
