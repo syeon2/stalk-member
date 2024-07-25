@@ -185,6 +185,26 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		assertThat(findMemberOptional.get().getProfileImageUrl()).isNotEqualTo(savedMember.getProfileImageUrl());
 	}
 
+	@Test
+	@DisplayName(value = "계정 상태를 비활성화로 변경합니다.")
+	void updateStatusInactive() {
+		// given
+		Member member = createMember("waterkite94@gmail.com", "00011112222");
+		Member savedMember = memberPersistenceAdapter.save(member);
+
+		assertThat(memberRepository.findAll().size()).isEqualTo(1);
+
+		// when
+		memberPersistenceAdapter.updateStatusInactive(Objects.requireNonNull(savedMember.getMemberId()));
+
+		// then
+		Optional<MemberEntity> findMemberOptional = memberRepository.findById(
+			Objects.requireNonNull(savedMember.getId()));
+
+		assertThat(findMemberOptional).isPresent();
+		assertThat(findMemberOptional.get().getMemberStatus()).isEqualTo(MemberStatus.INACTIVE);
+	}
+
 	private @NotNull Member createMember(String email, String phoneNumber) {
 		return new Member(null, "memberId", "username", email, "password", phoneNumber, "introduction",
 			null, RoleLevel.USER_GENERAL, MemberStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());

@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
+import io.waterkite94.stalk.domain.vo.MemberStatus;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -46,6 +47,16 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 	public void updateProfileImageUrl(String memberId, String profileImageUrl) {
 		queryFactory.update(memberEntity)
 			.set(memberEntity.profileImageUrl, profileImageUrl)
+			.where(memberEntity.memberId.eq(memberId))
+			.execute();
+	}
+
+	@Override
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	public void updateInactiveStatus(String memberId) {
+		queryFactory.update(memberEntity)
+			.set(memberEntity.memberStatus, MemberStatus.INACTIVE)
 			.where(memberEntity.memberId.eq(memberId))
 			.execute();
 	}
