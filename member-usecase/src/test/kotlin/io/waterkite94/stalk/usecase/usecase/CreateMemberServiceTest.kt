@@ -31,7 +31,7 @@ class CreateMemberServiceTest : IntegrationTestSupport() {
         given(securityUtil.encryptPassword(member.password))
             .willReturn("123456789910")
 
-        given(memberPersistencePort.save(any())).willAnswer { invocation ->
+        given(memberPersistencePort.saveMember(any())).willAnswer { invocation ->
             invocation.arguments[0] as Member
         }
 
@@ -40,7 +40,7 @@ class CreateMemberServiceTest : IntegrationTestSupport() {
 
         // then
         val memberCaptor = argumentCaptor<Member>()
-        verify(memberPersistencePort).save(memberCaptor.capture())
+        verify(memberPersistencePort).saveMember(memberCaptor.capture())
 
         val capturedMember = memberCaptor.firstValue
 

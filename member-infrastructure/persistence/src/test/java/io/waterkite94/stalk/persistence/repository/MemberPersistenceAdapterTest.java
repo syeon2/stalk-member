@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,20 +33,15 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		memberRepository.deleteAllInBatch();
 	}
 
-	@AfterEach
-	void after() {
-		memberRepository.deleteAllInBatch();
-	}
-
 	@Test
 	@Transactional
 	@DisplayName(value = "회원 정보를 저장합니다.")
-	void save() {
+	void saveMember() {
 		// given
 		Member member = createMember("email", "00011112222");
 
 		// when
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		// then
 		assertThat(savedMember)
@@ -64,7 +58,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		String email = "email";
 		Member member = createMember(email, "00011112222");
 
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		// when
 		memberPersistenceAdapter.findMemberByEmailOrPhoneNumber(email, "11122223333");
@@ -84,7 +78,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		String phoneNumber = "00011112222";
 		Member member = createMember("email", phoneNumber);
 
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		// when
 		memberPersistenceAdapter.findMemberByEmailOrPhoneNumber("hello@gmail.com", phoneNumber);
@@ -103,7 +97,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		// given
 		String email = "email";
 		Member member = createMember(email, "00011112222");
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		assertThat(memberRepository.findAll().size()).isEqualTo(1);
 
@@ -122,7 +116,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 		String introduction = "introduction";
 		Member member = createMemberUsernameAndIntroduction(username, introduction);
 
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 		//
 		String changeUsername = "changeUsername";
 		String changeInformation = "changeInformation";
@@ -148,7 +142,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 	void updatePassword() {
 		// given
 		Member member = createMember("waterkite94@gmail.com", "00011112222");
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		assertThat(memberRepository.findAll().size()).isEqualTo(1);
 
@@ -168,7 +162,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 	void updateProfileImageUrl() {
 		// given
 		Member member = createMember("waterkite94@gmail.com", "00011112222");
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		assertThat(memberRepository.findAll().size()).isEqualTo(1);
 
@@ -190,7 +184,7 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 	void updateStatusInactive() {
 		// given
 		Member member = createMember("waterkite94@gmail.com", "00011112222");
-		Member savedMember = memberPersistenceAdapter.save(member);
+		Member savedMember = memberPersistenceAdapter.saveMember(member);
 
 		assertThat(memberRepository.findAll().size()).isEqualTo(1);
 

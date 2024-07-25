@@ -23,7 +23,7 @@ class CreateMemberService(
         validateEmailAndPhoneNumber(member.email, member.phoneNumber)
         validateEmailAuthenticationCode(member.email, emailAuthenticationCode)
 
-        return memberPersistencePort.save(initializeNewMember(member))
+        return memberPersistencePort.saveMember(initializeNewMember(member))
     }
 
     private fun validateEmailAndPhoneNumber(

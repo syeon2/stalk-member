@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing
-@EntityScan(basePackages = {"io.waterkite94.stalk"})
-@EnableJpaRepositories(basePackages = {"io.waterkite94.stalk"})
+@EntityScan(basePackages = {"io.waterkite94.stalk.persistence"})
+@EnableJpaRepositories(basePackages = {"io.waterkite94.stalk.persistence"})
 public class JpaConfig {
 }

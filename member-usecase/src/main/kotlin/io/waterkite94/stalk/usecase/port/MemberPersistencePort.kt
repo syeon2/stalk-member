@@ -4,7 +4,7 @@ import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto
 
 interface MemberPersistencePort {
-    fun save(member: Member): Member
+    fun saveMember(member: Member): Member
 
     fun findMemberByEmailOrPhoneNumber(
         email: String,

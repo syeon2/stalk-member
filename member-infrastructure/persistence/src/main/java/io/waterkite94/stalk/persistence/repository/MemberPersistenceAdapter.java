@@ -21,7 +21,7 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 
 	@NotNull
 	@Override
-	public Member save(@NotNull Member member) {
+	public Member saveMember(@NotNull Member member) {
 		MemberEntity savedMember = memberRepository.save(memberMapper.toEntity(member));
 
 		return memberMapper.toDomain(savedMember);
@@ -31,7 +31,7 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	@Override
 	public Member findMemberByEmailOrPhoneNumber(@NotNull String email, @NotNull String phoneNumber) {
 		Optional<MemberEntity> findMemberOptional =
-			memberRepository.findMemberByEmailOrPhoneNumber(email, phoneNumber);
+			memberRepository.findByEmailOrPhoneNumber(email, phoneNumber);
 
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
 	}
@@ -39,7 +39,7 @@ public class MemberPersistenceAdapter implements MemberPersistencePort {
 	@Nullable
 	@Override
 	public Member findMemberByEmail(@NotNull String email) {
-		Optional<MemberEntity> findMemberOptional = memberRepository.findMemberByEmail(email);
+		Optional<MemberEntity> findMemberOptional = memberRepository.findByEmail(email);
 
 		return findMemberOptional.map(memberMapper::toDomain).orElse(null);
 	}
