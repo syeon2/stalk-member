@@ -1,5 +1,6 @@
 package io.waterkite94.stalk.persistence.entity;
 
+import io.waterkite94.stalk.domain.vo.MemberStatus;
 import io.waterkite94.stalk.domain.vo.RoleLevel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,9 +51,13 @@ public class MemberEntity extends BaseEntity {
 	@Column(name = "role_level", columnDefinition = "varchar(30)", nullable = false)
 	private RoleLevel roleLevel;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status", columnDefinition = "varchar(30)", nullable = false)
+	private MemberStatus memberStatus;
+
 	@Builder
 	private MemberEntity(String memberId, String username, String email, String password, String phoneNumber,
-		String introduction, String profileImageUrl, RoleLevel roleLevel) {
+		String introduction, String profileImageUrl, RoleLevel roleLevel, MemberStatus memberStatus) {
 		this.memberId = memberId;
 		this.username = username;
 		this.email = email;
@@ -61,5 +66,6 @@ public class MemberEntity extends BaseEntity {
 		this.introduction = introduction;
 		this.profileImageUrl = profileImageUrl;
 		this.roleLevel = roleLevel;
+		this.memberStatus = memberStatus;
 	}
 }

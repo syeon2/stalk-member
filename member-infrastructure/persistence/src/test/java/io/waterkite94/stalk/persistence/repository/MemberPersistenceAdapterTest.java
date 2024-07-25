@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.domain.model.Member;
 import io.waterkite94.stalk.domain.model.UpdateMemberInformationDto;
+import io.waterkite94.stalk.domain.vo.MemberStatus;
 import io.waterkite94.stalk.domain.vo.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
@@ -186,11 +187,11 @@ class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
 	private @NotNull Member createMember(String email, String phoneNumber) {
 		return new Member(null, "memberId", "username", email, "password", phoneNumber, "introduction",
-			null, RoleLevel.USER_GENERAL, LocalDateTime.now(), LocalDateTime.now());
+			null, RoleLevel.USER_GENERAL, MemberStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
 	}
 
 	private @NotNull Member createMemberUsernameAndIntroduction(String username, String introduction) {
 		return new Member(null, "memberId", username, "waterkite94@gmail.com", "password", "00011112222", introduction,
-			null, RoleLevel.USER_GENERAL, LocalDateTime.now(), LocalDateTime.now());
+			null, RoleLevel.USER_GENERAL, MemberStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
 	}
 }

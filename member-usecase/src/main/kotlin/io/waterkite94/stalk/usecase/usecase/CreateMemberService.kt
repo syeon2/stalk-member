@@ -1,6 +1,7 @@
 package io.waterkite94.stalk.usecase.usecase
 
 import io.waterkite94.stalk.domain.model.Member
+import io.waterkite94.stalk.domain.vo.MemberStatus
 import io.waterkite94.stalk.domain.vo.RoleLevel
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
 import io.waterkite94.stalk.exception.DuplicatedMemberException
@@ -54,6 +55,7 @@ class CreateMemberService(
             .withMemberId(generateMemberId())
             .withPassword(encryptPassword(member.password))
             .withRoleLevel(assignDefaultRole())
+            .withMemberStatus(MemberStatus.ACTIVE)
 
     private fun generateMemberId(): String = UUID.randomUUID().toString()
 

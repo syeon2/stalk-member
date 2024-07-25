@@ -18,6 +18,7 @@ public class MemberMapper {
 			.introduction(member.getIntroduction())
 			.profileImageUrl(member.getProfileImageUrl())
 			.roleLevel(member.getRoleLevel())
+			.memberStatus(member.getMemberStatus())
 			.build();
 	}
 
@@ -32,6 +33,7 @@ public class MemberMapper {
 			memberEntity.getIntroduction(),
 			memberEntity.getProfileImageUrl(),
 			memberEntity.getRoleLevel(),
+			memberEntity.getMemberStatus(),
 			memberEntity.getCreatedAt(),
 			memberEntity.getUpdatedAt()
 		);

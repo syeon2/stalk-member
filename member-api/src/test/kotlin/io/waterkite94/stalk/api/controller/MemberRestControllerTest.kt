@@ -5,6 +5,7 @@ import io.waterkite94.stalk.api.dto.request.ChangeMemberPasswordRequest
 import io.waterkite94.stalk.api.dto.request.CreateMemberRequest
 import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.domain.model.Member
+import io.waterkite94.stalk.domain.vo.MemberStatus
 import io.waterkite94.stalk.domain.vo.RoleLevel
 import io.waterkite94.stalk.usecase.usecase.ChangeMemberProfile
 import io.waterkite94.stalk.usecase.usecase.CreateMember
@@ -181,6 +182,7 @@ class MemberRestControllerTest : ControllerTestSupport() {
             "introduction",
             null,
             RoleLevel.USER_GENERAL,
+            MemberStatus.ACTIVE,
             LocalDateTime.now(),
             LocalDateTime.now()
         )
