@@ -1,7 +1,6 @@
 package io.waterkite94.stalk.api.security.config
 
 import io.waterkite94.stalk.api.security.filter.AuthenticationFilter
-import io.waterkite94.stalk.api.security.util.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -13,10 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
-@ComponentScan(basePackages = ["io.waterkite94.stalk"])
+@ComponentScan(
+    basePackages = ["io.waterkite94.stalk.encrypt"],
+    basePackageClasses = [UserService::class]
+)
 @EnableWebSecurity
 class WebConfig(
     private val passwordEncoder: PasswordEncoder,
@@ -33,15 +34,7 @@ class WebConfig(
         http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { authRequest ->
-                authRequest
-                    .requestMatchers(AntPathRequestMatcher("/api/v1/members"))
-                    .permitAll()
-                    .requestMatchers(AntPathRequestMatcher("/api/v1/member/verification-email/**"))
-                    .permitAll()
-                    .requestMatchers(AntPathRequestMatcher("/api/v1/members/**"))
-                    .permitAll()
-                    .requestMatchers(AntPathRequestMatcher("/**"))
-                    .permitAll()
+                authRequest.anyRequest().permitAll()
             }.authenticationManager(authenticationManager)
             .sessionManagement { session ->
                 session

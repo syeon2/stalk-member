@@ -3,7 +3,7 @@ package io.waterkite94.stalk.api.security.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import io.waterkite94.stalk.api.security.util.UserService
+import io.waterkite94.stalk.api.security.config.UserService
 import io.waterkite94.stalk.api.security.vo.RequestLogin
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
