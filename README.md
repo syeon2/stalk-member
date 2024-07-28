@@ -31,11 +31,11 @@
 ├── application
 ├── infrastructure
 │   ├── persistence
-│   └── redis
+│   ├── redis
+│   └── smtp
 ├── common
 │   ├── encrypt
-│   ├── exception
-│   └── mail
+│   └── exception
 ├── domain
 └── support
     ├── monitor

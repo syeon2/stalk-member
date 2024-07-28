@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.persistence.repository;
+package io.waterkite94.stalk.persistence.adapter;
 
 import java.util.Optional;
 
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import io.waterkite94.stalk.domain.model.Member;
 import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
+import io.waterkite94.stalk.persistence.repository.MemberRepository;
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort;
 import lombok.RequiredArgsConstructor;
 
