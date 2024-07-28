@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.persistence.repository;
+package io.waterkite94.stalk.persistence.adapter;
 
 import org.springframework.stereotype.Component;
 

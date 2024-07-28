@@ -1,9 +1,10 @@
 package io.waterkite94.stalk.usecase
 
 import io.waterkite94.stalk.encrypt.util.SecurityUtil
-import io.waterkite94.stalk.mail.MailUtil
 import io.waterkite94.stalk.usecase.port.AuthenticationCodePort
+import io.waterkite94.stalk.usecase.port.FollowPersistencePort
 import io.waterkite94.stalk.usecase.port.MemberPersistencePort
+import io.waterkite94.stalk.usecase.port.SmtpPort
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
@@ -23,7 +24,10 @@ abstract class IntegrationTestSupport {
     protected lateinit var securityUtil: SecurityUtil
 
     @Mock
-    protected lateinit var mailUtil: MailUtil
+    protected lateinit var smtpPort: SmtpPort
+
+    @Mock
+    protected lateinit var followPersistencePort: FollowPersistencePort
 
     @Mock
     protected lateinit var env: Environment
