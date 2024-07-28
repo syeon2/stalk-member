@@ -8,16 +8,20 @@ class FollowMemberService(
     private val followPersistencePort: FollowPersistencePort
 ) : FollowMember {
     override fun following(
-        followeeId: String,
-        followerId: String
+        followerId: String,
+        followedId: String
     ) {
-        followPersistencePort.saveFollow(followeeId, followerId)
+        followPersistencePort.saveFollow(followerId, followedId)
     }
 
     override fun unfollowing(
-        followeeId: String,
-        followerId: String
+        followerId: String,
+        followedId: String
     ) {
-        followPersistencePort.deleteFollow(followeeId, followerId)
+        followPersistencePort.deleteFollow(followerId, followedId)
     }
+
+    override fun countFollower(memberId: String): Int = followPersistencePort.countFollower(memberId)
+
+    override fun countFollowed(memberId: String): Int = followPersistencePort.countFollowed(memberId)
 }

@@ -11,10 +11,16 @@ public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "INSERT INTO follow (followee_id, follower_id) VALUES (:followeeId, :followerId)", nativeQuery = true)
-	void saveByIds(String followeeId, String followerId);
+	@Query(value = "INSERT INTO follow (follower_id, followed_id) VALUES (:followerId, :followedId)", nativeQuery = true)
+	void saveByIds(String followerId, String followedId);
 
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	void deleteByFolloweeIdAndFollowerId(String followeeId, String followerId);
+	void deleteByFollowerIdAndFollowedId(String followerId, String followedId);
+
+	// 함수를 Call한 회원이 팔로우한 회원 수
+	Integer countByFollowerId(String memberId);
+
+	// 함수를 Call한 회원을 팔로우한 회원 수
+	Integer countByFollowedId(String memberId);
 }

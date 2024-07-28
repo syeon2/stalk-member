@@ -33,48 +33,48 @@ class FollowPersistenceAdapterTest extends IntegrationTestSupport {
 	@DisplayName(value = "팔로우 관계를 저장합니다.")
 	void save() {
 		// given
-		String followeeId = "followeeId";
 		String followerId = "followerId";
+		String followedId = "followedId";
 
 		// when
-		followPersistenceAdapter.saveFollow(followeeId, followerId);
+		followPersistenceAdapter.saveFollow(followerId, followedId);
 
 		// then
 		List<FollowEntity> findAll = followRepository.findAll();
 
 		assertThat(findAll.size()).isEqualTo(1);
 		assertThat(findAll.get(0))
-			.extracting("followeeId", "followerId")
-			.containsExactly(followeeId, followerId);
+			.extracting("followerId", "followedId")
+			.containsExactly(followerId, followedId);
 	}
 
 	@Test
 	@Transactional
-	@DisplayName(value = "이미 저장된 팔로우 관계라면 예외를 반환합니다. (followee & follower Unique)")
+	@DisplayName(value = "이미 저장된 팔로우 관계라면 예외를 반환합니다. (follower & followed Unique)")
 	void save_unique() {
 		// given
-		String followeeId = "followeeId";
 		String followerId = "followerId";
+		String followedId = "followedId";
 
 		// when // then
-		followPersistenceAdapter.saveFollow(followeeId, followerId);
+		followPersistenceAdapter.saveFollow(followerId, followedId);
 
-		assertThatThrownBy(() -> followPersistenceAdapter.saveFollow(followeeId, followerId))
+		assertThatThrownBy(() -> followPersistenceAdapter.saveFollow(followerId, followedId))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 
 	@Test
 	@Transactional
-	@DisplayName(value = "같은 followeeId는 여려명의 followerId를 저장할 수 있습니다.")
+	@DisplayName(value = "같은 followerId는 여려명의 followedId를 저장할 수 있습니다.")
 	void save_diff_followerId() {
 		// given
-		String followeeId = "followeeId";
-		String followerId1 = "followerId1";
-		String followerId2 = "followerId2";
+		String followerId = "followerId";
+		String followedId1 = "followerId1";
+		String followedId2 = "followerId2";
 
 		// when
-		followPersistenceAdapter.saveFollow(followeeId, followerId1);
-		followPersistenceAdapter.saveFollow(followeeId, followerId2);
+		followPersistenceAdapter.saveFollow(followerId, followedId1);
+		followPersistenceAdapter.saveFollow(followerId, followedId2);
 
 		// then
 		assertThat(followRepository.findAll().size()).isEqualTo(2);
@@ -85,14 +85,50 @@ class FollowPersistenceAdapterTest extends IntegrationTestSupport {
 	@DisplayName(value = "팔로우 관계를 삭제합니다.")
 	void deleteFollow() {
 		// given
-		String followeeId = "followeeId";
 		String followerId = "followerId";
-		followPersistenceAdapter.saveFollow(followeeId, followerId);
+		String followedId = "followedId";
+		followPersistenceAdapter.saveFollow(followerId, followedId);
 
 		// when
-		followPersistenceAdapter.deleteFollow(followeeId, followerId);
+		followPersistenceAdapter.deleteFollow(followerId, followedId);
 
 		// then
 		assertThat(followRepository.findAll().size()).isEqualTo(0);
+	}
+
+	@Test
+	@Transactional
+	@DisplayName(value = "팔로우한 회원의 수를 조회합니다.")
+	void countFollower() {
+		// given
+		String followerId = "followerId";
+		String followedId = "followedId1";
+		String followedId2 = "followedId2";
+		followPersistenceAdapter.saveFollow(followerId, followedId);
+		followPersistenceAdapter.saveFollow(followerId, followedId2);
+
+		// when
+		int countFollowers = followPersistenceAdapter.countFollower(followerId);
+
+		// then
+		assertThat(countFollowers).isEqualTo(2);
+	}
+
+	@Test
+	@Transactional
+	@DisplayName(value = "회원을 팔로우한 수를 조회합니다.")
+	void countFollowed() {
+		// given
+		String followerId = "followerId";
+		String followedId1 = "followerId1";
+		String followedId2 = "followerId2";
+		followPersistenceAdapter.saveFollow(followedId1, followerId);
+		followPersistenceAdapter.saveFollow(followedId2, followerId);
+
+		// when
+		int countFollowers = followPersistenceAdapter.countFollowed(followerId);
+
+		// then
+		assertThat(countFollowers).isEqualTo(2);
 	}
 }
