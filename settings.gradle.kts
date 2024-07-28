@@ -7,8 +7,8 @@ include(
     "application",
     "infrastructure:persistence",
     "infrastructure:redis",
+    "infrastructure:smtp",
     "common:exception",
-    "common:mail",
     "common:encrypt",
     "support:msa-core",
     "support:monitor"

@@ -5,6 +5,7 @@ dependencies {
     implementation(project(":application"))
     implementation(project(":infrastructure:persistence"))
     implementation(project(":infrastructure:redis"))
+    implementation(project(":infrastructure:smtp"))
     implementation(project(":common:exception"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")

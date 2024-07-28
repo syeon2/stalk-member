@@ -1,6 +1,5 @@
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":common:mail"))
     implementation(project(":common:exception"))
     implementation(project(":common:encrypt"))
 

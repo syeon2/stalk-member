@@ -1,6 +1,7 @@
-package io.waterkite94.stalk.mail
+package io.waterkite94.stalk.smtp
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.waterkite94.stalk.usecase.port.SmtpPort
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Component
 import java.security.SecureRandom
 
 @Component
-class MailUtil(
+class JavaMailSmtp(
     private val mailSender: JavaMailSender
-) {
+) : SmtpPort {
     private val logger = KotlinLogging.logger {}
 
     @Async
-    fun sendMailByJavaMailSender(
+    override fun sendMailByJavaMailSender(
         toEmail: String,
         title: String,
         content: String
@@ -26,7 +27,7 @@ class MailUtil(
         }
     }
 
-    fun createVerificationCode(codeLength: Int): String {
+    override fun createVerificationCode(codeLength: Int): String {
         try {
             val random = SecureRandom()
             val builder = StringBuilder()
