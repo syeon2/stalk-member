@@ -21,16 +21,16 @@ class VerifyEmailServiceTest : IntegrationTestSupport() {
         val title = "회원 가입 인증번호입니다."
         val codeLength = 6
 
-        given(mailUtil.createVerificationCode(codeLength)).willReturn(authenticationCode)
-        doNothing().`when`(mailUtil).sendMailByJavaMailSender(email, title, authenticationCode)
+        given(smtpPort.createVerificationCode(codeLength)).willReturn(authenticationCode)
+        doNothing().`when`(smtpPort).sendMailByJavaMailSender(email, title, authenticationCode)
         doNothing().`when`(authenticationCodePort).saveAuthenticationCode(email, authenticationCode)
 
         // when
         val toEmail = verifyEmailService.verifyEmail(email)
 
         // then
-        verify(mailUtil).createVerificationCode(codeLength)
-        verify(mailUtil).sendMailByJavaMailSender(email, title, authenticationCode)
+        verify(smtpPort).createVerificationCode(codeLength)
+        verify(smtpPort).sendMailByJavaMailSender(email, title, authenticationCode)
         verify(authenticationCodePort).saveAuthenticationCode(email, authenticationCode)
 
         assertThat(toEmail).isEqualTo(email)

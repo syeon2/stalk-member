@@ -1,4 +1,4 @@
-package io.waterkite94.stalk.persistence.repository;
+package io.waterkite94.stalk.persistence.adapter;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -19,6 +19,7 @@ import io.waterkite94.stalk.domain.type.MemberStatus;
 import io.waterkite94.stalk.domain.type.RoleLevel;
 import io.waterkite94.stalk.persistence.IntegrationTestSupport;
 import io.waterkite94.stalk.persistence.entity.MemberEntity;
+import io.waterkite94.stalk.persistence.repository.MemberRepository;
 
 class MemberPersistenceAdapterTest extends IntegrationTestSupport {
 
