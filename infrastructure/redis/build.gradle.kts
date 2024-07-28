@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":member-usecase"))
+    implementation(project(":application"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 

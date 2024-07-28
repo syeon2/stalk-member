@@ -2,14 +2,14 @@ rootProject.name = "member-service"
 
 include(
     "bootstrap",
-    "member-api",
-    "member-domain",
-    "member-usecase",
-    "member-infrastructure:persistence",
-    "member-infrastructure:redis",
-    "member-common:exception",
-    "member-common:mail",
-    "member-common:encrypt",
+    "presentation",
+    "domain",
+    "application",
+    "infrastructure:persistence",
+    "infrastructure:redis",
+    "common:exception",
+    "common:mail",
+    "common:encrypt",
     "support:msa-core",
     "support:monitor"
 )

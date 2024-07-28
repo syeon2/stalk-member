@@ -1,11 +1,11 @@
 val jwtVersion: String by project
 
 dependencies {
-    implementation(project(":member-domain"))
-    implementation(project(":member-usecase"))
-    implementation(project(":member-infrastructure:persistence"))
-    implementation(project(":member-infrastructure:redis"))
-    implementation(project(":member-common:exception"))
+    implementation(project(":domain"))
+    implementation(project(":application"))
+    implementation(project(":infrastructure:persistence"))
+    implementation(project(":infrastructure:redis"))
+    implementation(project(":common:exception"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
