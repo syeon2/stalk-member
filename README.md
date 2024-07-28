@@ -27,16 +27,16 @@
 ```
 .
 ├── bootstrap
-├── member-api
-├── member-usecase
-├── member-infrastructure
+├── presentation
+├── application
+├── infrastructure
 │   ├── persistence
 │   └── redis
-├── member-common
+├── common
 │   ├── encrypt
 │   ├── exception
 │   └── mail
-├── member-domain
+├── domain
 └── support
     ├── monitor
     └── msa-core

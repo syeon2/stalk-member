@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":member-api"))
+    implementation(project(":presentation"))
 
     implementation(project(":support:monitor"))
     implementation(project(":support:msa-core"))
