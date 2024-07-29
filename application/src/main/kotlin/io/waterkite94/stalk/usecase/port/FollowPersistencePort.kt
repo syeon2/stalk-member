@@ -1,19 +1,31 @@
 package io.waterkite94.stalk.usecase.port
 
+import io.waterkite94.stalk.domain.model.FollowInfoDto
+
 interface FollowPersistencePort {
     fun saveFollow(
-        followerId: String,
+        followId: String,
         followedId: String
     )
 
     fun deleteFollow(
-        followerId: String,
+        followId: String,
         followedId: String
     )
 
-    // 회원이 팔로우한 회원 수
-    fun countFollowed(memberId: String): Int
+    fun countFollowing(memberId: String): Int
 
-    // 회원을 팔로우한 회원 수
     fun countFollower(memberId: String): Int
+
+    fun findFollowings(
+        memberId: String,
+        offset: Int,
+        limit: Int
+    ): List<FollowInfoDto>
+
+    fun findFollowers(
+        memberId: String,
+        offset: Int,
+        limit: Int
+    ): List<FollowInfoDto>
 }

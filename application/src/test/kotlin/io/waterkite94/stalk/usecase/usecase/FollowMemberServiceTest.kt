@@ -18,44 +18,44 @@ class FollowMemberServiceTest : IntegrationTestSupport() {
     @DisplayName(value = "follwer 회원이 followed 회원을 following합니다.")
     fun following() {
         // given
-        val followerId = "followerId"
+        val followId = "followId"
         val followedId = "followedId"
 
-        doNothing().`when`(followPersistencePort).saveFollow(followerId, followedId)
+        doNothing().`when`(followPersistencePort).saveFollow(followId, followedId)
 
         // when
-        followMemberService.following(followerId, followedId)
+        followMemberService.following(followId, followedId)
 
         // then
-        verify(followPersistencePort, times(1)).saveFollow(followerId, followedId)
+        verify(followPersistencePort, times(1)).saveFollow(followId, followedId)
     }
 
     @Test
     @DisplayName(value = "follower 회원이 followed 회원을 unfollowing합니다.")
     fun unfollowing() {
         // given
-        val followerId = "followerId"
+        val followId = "followId"
         val followedId = "followedId"
 
-        doNothing().`when`(followPersistencePort).deleteFollow(followerId, followedId)
+        doNothing().`when`(followPersistencePort).deleteFollow(followId, followedId)
 
         // when
-        followMemberService.unfollowing(followerId, followedId)
+        followMemberService.unfollowing(followId, followedId)
 
         // then
-        verify(followPersistencePort, times(1)).deleteFollow(followerId, followedId)
+        verify(followPersistencePort, times(1)).deleteFollow(followId, followedId)
     }
 
     @Test
     @DisplayName(value = "회원이 팔로우하는 회원 수를 조회합니다.")
     fun countFollower() {
         // given
-        val followerId = "followerId"
+        val memberId = "memberId"
 
-        given(followPersistencePort.countFollower(followerId)).willReturn(1)
+        given(followPersistencePort.countFollowing(memberId)).willReturn(1)
 
         // when
-        val countFollower = followMemberService.countFollower(followerId)
+        val countFollower = followMemberService.countFollowing(memberId)
 
         // then
         assertThat(countFollower).isEqualTo(1)
@@ -65,14 +65,48 @@ class FollowMemberServiceTest : IntegrationTestSupport() {
     @DisplayName(value = "회원을 팔로우하는 회원 수를 조회합니다.")
     fun countFollowed() {
         // given
-        val followedId = "followedId"
+        val memberId = "memberId"
 
-        given(followPersistencePort.countFollowed(followedId)).willReturn(1)
+        given(followPersistencePort.countFollower(memberId)).willReturn(1)
 
         // when
-        val countFollowed = followMemberService.countFollowed(followedId)
+        val countFollowed = followMemberService.countFollower(memberId)
 
         // then
         assertThat(countFollowed).isEqualTo(1)
+    }
+
+    @Test
+    @DisplayName(value = "회원이 팔로우하는 회원 정보들을 조회합니다.")
+    fun findFollowings() {
+        // given
+        val memberId = "memberId"
+        val offset = 0
+        val limit = 10
+
+        given(followPersistencePort.findFollowings(memberId, offset, limit)).willReturn(listOf())
+
+        // when
+        followMemberService.findFollowings(memberId, offset, limit)
+
+        // then
+        verify(followPersistencePort, times(1)).findFollowings(memberId, offset, limit)
+    }
+
+    @Test
+    @DisplayName(value = "회원을 팔로우하는 회원 정보들을 조회합니다.")
+    fun findFollowers() {
+        // given
+        val memberId = "memberId"
+        val offset = 0
+        val limit = 10
+
+        given(followPersistencePort.findFollowers(memberId, offset, limit)).willReturn(listOf())
+
+        // when
+        followMemberService.findFollowers(memberId, offset, limit)
+
+        // then
+        verify(followPersistencePort, times(1)).findFollowers(memberId, offset, limit)
     }
 }
