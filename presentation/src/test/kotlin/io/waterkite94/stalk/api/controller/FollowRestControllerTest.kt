@@ -29,9 +29,9 @@ class FollowRestControllerTest : ControllerTestSupport() {
     @WithMockUser(roles = ["USER"])
     fun followingApi() {
         // given
-        val followerId = "followerId"
+        val followId = "followId"
         val followedId = "followedId"
-        val request = FollowRequest(followerId, followedId)
+        val request = FollowRequest(followId, followedId)
 
         doNothing().`when`(followMember).following(followedId, followedId)
 
@@ -53,9 +53,9 @@ class FollowRestControllerTest : ControllerTestSupport() {
     @WithMockUser(roles = ["USER"])
     fun unfollowingApi() {
         // given
-        val followerId = "followerId"
+        val followId = "followId"
         val followedId = "followedId"
-        val request = FollowRequest(followerId, followedId)
+        val request = FollowRequest(followId, followedId)
 
         doNothing().`when`(followMember).unfollowing(followedId, followedId)
 
@@ -75,16 +75,17 @@ class FollowRestControllerTest : ControllerTestSupport() {
     @Test
     @DisplayName(value = "회원이 follow한 회원의 수를 조회하는 API를 호출합니다.")
     @WithMockUser(roles = ["USER"])
-    fun countFollowerApi() {
+    fun countFollowingApi() {
         // given
-        val followerId = "followerId"
+        val memberId = "memberId"
 
-        given(followMember.countFollower(followerId)).willReturn(1)
+        given(followMember.countFollowing(memberId)).willReturn(1)
 
         // when  // then
         mockMvc
             .perform(
-                get("/api/v1/follower/$followerId")
+                get("/api/v1/follow/following/count")
+                    .param("memberId", memberId)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
@@ -96,21 +97,72 @@ class FollowRestControllerTest : ControllerTestSupport() {
     @Test
     @DisplayName(value = "회원을 follow한 회원의 수를 조회하는 API를 호출합니다.")
     @WithMockUser(roles = ["USER"])
-    fun countFollowedApi() {
+    fun countFollowerApi() {
         // given
-        val followedId = "followedId"
+        val memberId = "memberId"
 
-        given(followMember.countFollowed(followedId)).willReturn(1)
+        given(followMember.countFollower(memberId)).willReturn(1)
 
         // when  // then
         mockMvc
             .perform(
-                get("/api/v1/followed/$followedId")
+                get("/api/v1/follow/follower/count")
+                    .param("memberId", memberId)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.count").value(1))
+    }
+
+    @Test
+    @DisplayName(value = "회원이 팔로우하는 회원들의 정보를 조회하는 API를 호출합니다.")
+    @WithMockUser(roles = ["USER"])
+    fun findFollowingsApi() {
+        // given
+        val memberId = "memberId"
+        val offset = 0
+        val limit = 10
+
+        given(followMember.findFollowings(memberId, offset, limit)).willReturn(listOf())
+
+        // when  // then
+        mockMvc
+            .perform(
+                get("/api/v1/follow/followings")
+                    .param("memberId", memberId)
+                    .param("offset", offset.toString())
+                    .param("limit", limit.toString())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").isArray)
+    }
+
+    @Test
+    @DisplayName(value = "회원을 팔로우하는 회원들의 정보를 조회하는 API를 호출합니다.")
+    @WithMockUser(roles = ["USER"])
+    fun findFollowerApi() {
+        // given
+        val memberId = "memberId"
+        val offset = 0
+        val limit = 10
+
+        given(followMember.findFollowers(memberId, offset, limit)).willReturn(listOf())
+
+        // when  // then
+        mockMvc
+            .perform(
+                get("/api/v1/follow/followers")
+                    .param("memberId", memberId)
+                    .param("offset", offset.toString())
+                    .param("limit", limit.toString())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").isArray)
     }
 }

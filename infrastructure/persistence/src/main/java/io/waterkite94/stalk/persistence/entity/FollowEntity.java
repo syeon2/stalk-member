@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 	name = "follow",
 	uniqueConstraints = @UniqueConstraint(
 		name = "FOLLOW_UNIQUE",
-		columnNames = {"follower_id", "followed_id"})
+		columnNames = {"follow_id", "followed_id"})
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowEntity {
@@ -31,8 +31,8 @@ public class FollowEntity {
 	/**
 	 * 팔로우를 신청한 회원 아이디
 	 */
-	@Column(name = "follower_id", columnDefinition = "varchar(60)", nullable = false)
-	private String followerId;
+	@Column(name = "follow_id", columnDefinition = "varchar(60)", nullable = false)
+	private String followId;
 
 	/**
 	 * 팔로우를 받은 회원 아이디
@@ -41,8 +41,8 @@ public class FollowEntity {
 	private String followedId;
 
 	@Builder
-	private FollowEntity(String followerId, String followedId) {
-		this.followerId = followerId;
+	private FollowEntity(String followId, String followedId) {
+		this.followId = followId;
 		this.followedId = followedId;
 	}
 }

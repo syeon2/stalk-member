@@ -7,19 +7,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.waterkite94.stalk.persistence.entity.FollowEntity;
 
-public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
+public interface FollowRepository extends JpaRepository<FollowEntity, Long>, FollowRepositoryCustom {
 
 	@Transactional
 	@Modifying
-	@Query(value = "INSERT INTO follow (follower_id, followed_id) VALUES (:followerId, :followedId)", nativeQuery = true)
-	void saveByIds(String followerId, String followedId);
+	@Query(value = "INSERT INTO follow (follow_id, followed_id) VALUES (:followId, :followedId)", nativeQuery = true)
+	void saveByIds(String followId, String followedId);
 
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	void deleteByFollowerIdAndFollowedId(String followerId, String followedId);
+	void deleteByFollowIdAndFollowedId(String followId, String followedId);
 
 	// 함수를 Call한 회원이 팔로우한 회원 수
-	Integer countByFollowerId(String memberId);
+	Integer countByFollowId(String followId);
 
 	// 함수를 Call한 회원을 팔로우한 회원 수
 	Integer countByFollowedId(String memberId);
