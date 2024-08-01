@@ -1,7 +1,9 @@
 package io.waterkite94.stalk.api.controller
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document
 import io.waterkite94.stalk.api.ControllerTestSupport
 import io.waterkite94.stalk.api.dto.request.FollowRequest
+import io.waterkite94.stalk.domain.model.FollowInfoDto
 import io.waterkite94.stalk.usecase.usecase.FollowMember
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -10,11 +12,20 @@ import org.mockito.kotlin.doNothing
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
+import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
+import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
+import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
+import org.springframework.restdocs.payload.JsonFieldType
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
+import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.queryParameters
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -46,6 +57,20 @@ class FollowRestControllerTest : ControllerTestSupport() {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data").value("Following successfully"))
+            .andDo(
+                document(
+                    "follow-create",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestFields(
+                        fieldWithPath("followId").type(JsonFieldType.STRING).description("팔로우 요청한 회원 아이디"),
+                        fieldWithPath("followedId").type(JsonFieldType.STRING).description("팔로우 요청받은 회원 아이디")
+                    ),
+                    responseFields(
+                        fieldWithPath("data").type(JsonFieldType.STRING).description("성공 요청 메시지")
+                    )
+                )
+            )
     }
 
     @Test
@@ -70,6 +95,20 @@ class FollowRestControllerTest : ControllerTestSupport() {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data").value("Unfollowing successfully"))
+            .andDo(
+                document(
+                    "follow-delete",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestFields(
+                        fieldWithPath("followId").type(JsonFieldType.STRING).description("팔로우 취소하는 회원 아이디"),
+                        fieldWithPath("followedId").type(JsonFieldType.STRING).description("팔로우 취소받은 회원 아이디")
+                    ),
+                    responseFields(
+                        fieldWithPath("data").type(JsonFieldType.STRING).description("성공 요청 메시지")
+                    )
+                )
+            )
     }
 
     @Test
@@ -85,13 +124,26 @@ class FollowRestControllerTest : ControllerTestSupport() {
         mockMvc
             .perform(
                 get("/api/v1/follow/following/count")
-                    .param("memberId", memberId)
+                    .queryParam("memberId", memberId)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.count").value(1))
+            .andDo(
+                document(
+                    "followingCount-get",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    queryParameters(
+                        parameterWithName("memberId").description("회원 아이디")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.count").description("팔로잉 수")
+                    )
+                )
+            )
     }
 
     @Test
@@ -107,13 +159,26 @@ class FollowRestControllerTest : ControllerTestSupport() {
         mockMvc
             .perform(
                 get("/api/v1/follow/follower/count")
-                    .param("memberId", memberId)
+                    .queryParam("memberId", memberId)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.count").value(1))
+            .andDo(
+                document(
+                    "followerCount-get",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    queryParameters(
+                        parameterWithName("memberId").description("회원 아이디")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.count").description("팔로잉 수")
+                    )
+                )
+            )
     }
 
     @Test
@@ -124,21 +189,38 @@ class FollowRestControllerTest : ControllerTestSupport() {
         val memberId = "memberId"
         val offset = 0
         val limit = 10
+        val response = followInfoDto()
 
-        given(followMember.findFollowings(memberId, offset, limit)).willReturn(listOf())
+        given(followMember.findFollowings(memberId, offset, limit)).willReturn(listOf(response))
 
         // when  // then
         mockMvc
             .perform(
                 get("/api/v1/follow/followings")
-                    .param("memberId", memberId)
-                    .param("offset", offset.toString())
-                    .param("limit", limit.toString())
+                    .queryParam("memberId", memberId)
+                    .queryParam("offset", offset.toString())
+                    .queryParam("limit", limit.toString())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").isArray)
+            .andDo(
+                document(
+                    "following-get",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    queryParameters(
+                        parameterWithName("memberId").description("회원 아이디"),
+                        parameterWithName("offset").description("Page Offset"),
+                        parameterWithName("limit").description("정보 개수")
+                    ),
+                    responseFields(
+                        fieldWithPath("data[].memberId").type(JsonFieldType.STRING).description("회원 아이디"),
+                        fieldWithPath("data[].username").type(JsonFieldType.STRING).description("회원 이름")
+                    )
+                )
+            )
     }
 
     @Test
@@ -149,20 +231,39 @@ class FollowRestControllerTest : ControllerTestSupport() {
         val memberId = "memberId"
         val offset = 0
         val limit = 10
+        val response = followInfoDto()
 
-        given(followMember.findFollowers(memberId, offset, limit)).willReturn(listOf())
+        given(followMember.findFollowers(memberId, offset, limit)).willReturn(listOf(response))
 
         // when  // then
         mockMvc
             .perform(
                 get("/api/v1/follow/followers")
-                    .param("memberId", memberId)
-                    .param("offset", offset.toString())
-                    .param("limit", limit.toString())
+                    .queryParam("memberId", memberId)
+                    .queryParam("offset", offset.toString())
+                    .queryParam("limit", limit.toString())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").isArray)
+            .andDo(
+                document(
+                    "follower-get",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    queryParameters(
+                        parameterWithName("memberId").description("회원 아이디"),
+                        parameterWithName("offset").description("Page Offset"),
+                        parameterWithName("limit").description("정보 개수")
+                    ),
+                    responseFields(
+                        fieldWithPath("data[].memberId").type(JsonFieldType.STRING).description("회원 아이디"),
+                        fieldWithPath("data[].username").type(JsonFieldType.STRING).description("회원 이름")
+                    )
+                )
+            )
     }
+
+    private fun followInfoDto() = FollowInfoDto("memberId", "username")
 }
