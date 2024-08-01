@@ -6,11 +6,14 @@ import io.waterkite94.stalk.api.dto.request.UpdateMemberRequest
 import io.waterkite94.stalk.api.dto.response.ApiResponse
 import io.waterkite94.stalk.api.dto.response.CreateMemberResponse
 import io.waterkite94.stalk.api.dto.response.VerifyEmailResponse
+import io.waterkite94.stalk.domain.model.Member
 import io.waterkite94.stalk.domain.model.UpdateMemberProfileDto
 import io.waterkite94.stalk.usecase.usecase.ChangeMember
 import io.waterkite94.stalk.usecase.usecase.CreateMember
+import io.waterkite94.stalk.usecase.usecase.FindMember
 import io.waterkite94.stalk.usecase.usecase.VerifyEmail
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 class MemberRestController(
     private val createMember: CreateMember,
     private val changeMember: ChangeMember,
+    private val findMember: FindMember,
     private val verifyEmail: VerifyEmail
 ) {
     @PostMapping
@@ -81,5 +85,14 @@ class MemberRestController(
         changeMember.changeStatusInactive(memberId)
 
         return ApiResponse.success("Member status set to inactive")
+    }
+
+    @GetMapping("/{memberId}")
+    fun getMember(
+        @PathVariable memberId: String
+    ): ApiResponse<Member> {
+        val findMember = findMember.findMemberByMemberId(memberId)
+
+        return ApiResponse.success(findMember)
     }
 }

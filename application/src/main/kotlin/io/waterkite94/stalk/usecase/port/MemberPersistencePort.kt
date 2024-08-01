@@ -13,6 +13,8 @@ interface MemberPersistencePort {
 
     fun findMemberByEmail(email: String): Member?
 
+    fun findMemberByMemberId(memberId: String): Member?
+
     fun updateMemberProfile(
         memberId: String,
         memberProfileDto: UpdateMemberProfileDto
